@@ -180,6 +180,21 @@ std::string trimm(const std::string& text)
 
 }// trimm
 
+/*!
+ * removes anything after the last period in the string
+ * \param text is the string to trim.
+ * \return A copy of text without an extension
+ */
+std::string removeExtension(const std::string& text)
+{
+    return text.substr(0, text.find_last_of("."));
+
+    /* Examples:
+     * python.py -> python
+     * python.file.py -> python.file
+     * .python ->       so be careful with hidden files
+     */
+}
 
 /*!
  * Replace all occurences of `find` with `replace`;

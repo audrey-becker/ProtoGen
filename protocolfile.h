@@ -36,6 +36,9 @@ public:
     //! Output an include directive
     void writeIncludeDirective(const std::string& include, const std::string& comment = std::string(), bool global = false, bool autoextension = true);
 
+    //! Output a python style include directive - move to private
+    void writePyIncludeDirective(const std::string& include, const std::string& comment = std::string());
+
     //! Set the name of the module
     void setModuleNameAndPath(std::string name, std::string filepath);
 

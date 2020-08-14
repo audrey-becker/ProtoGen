@@ -2,10 +2,14 @@
 #define FIELDCODING_H
 
 #include "protocolscaling.h"
+#include <QString>
+#include <QTextStream>
 
 class FieldCoding : public ProtocolScaling
 {
 public:
+
+#define pyTesting
 
     FieldCoding(ProtocolSupport sup);
 
@@ -13,6 +17,28 @@ public:
     bool generate(std::vector<std::string>& fileNameList, std::vector<std::string>& filePathList);
 
 protected:
+
+#ifdef pyTesting
+
+    // Both sides
+    std::string pySignature(int type, bool bigendian, bool encode);
+    std::string pyFormat(int type, bool bigendian);
+
+    // Encode
+    bool generatePyEncodeSource(void);
+    std::string fullPyEncodeFunction(int type, bool bigendian);
+
+    std::string pyEncodeComment(int type, bool bigendian);
+    std::string pyEncodeFunction(std::string signature, std::string comment, std::string format, int type);
+
+    // Decode
+    bool generatePyDecodeSource(void);
+    std::string fullPyDecodeFunction(int type, bool bigendian);
+
+    std::string pyDecodeComment(int type, bool bigendian);
+    std::string pyDecodeFunction(std::string signature, std::string comment, std::string format);
+
+#endif
 
     //! Get a human readable type name like "unsigned 3 byte integer".
     std::string getReadableTypeName(int type);

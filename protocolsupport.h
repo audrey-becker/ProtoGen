@@ -37,6 +37,9 @@ bool endsWith(const std::string& text, const std::string& test, bool casesensiti
 //! Trim white space from a std::string.
 std::string trimm(const std::string& text);
 
+//! Removes the .ext from a filename
+std::string removeExtension(const std::string& text);
+
 //! Replace all occurences of `find` with `replace`;
 std::string replace(const std::string& text, const std::string& find, const std::string& replace = std::string());
 
