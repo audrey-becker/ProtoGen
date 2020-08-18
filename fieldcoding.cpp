@@ -421,15 +421,15 @@ std::string FieldCoding::pyFormat(int type, bool bigendian)
     //    uint      - I
 
 
-    std::string format   = "";
-    std::string endian   = "";
-    std::string s_letter = " ";
-    std::string quote    = "'";
-    char letter = ' ';
+    std::string format = "";
+    std::string letter = "";
+    std::string endian = "";
+
+    std::string quote  = "'";
 
     bool isUnsigned  = typeUnsigneds[type];
-    int size       = typeSizes[type];
-    int coeficient = 0;
+    int size         = typeSizes[type];
+    int coeficient   = 0;
 
     if (bigendian)
         endian = ">";
@@ -440,11 +440,11 @@ std::string FieldCoding::pyFormat(int type, bool bigendian)
     {
         // float
         if (size == 4)
-            letter = 'f';
+            letter = "f";
         if (size == 8)
-            letter = 'd';
+            letter = "d";
         else
-            letter = 'Z'; // TODO: deal with special float
+            letter = "Z"; // TODO: deal with special float
     }
     else
     {
@@ -453,40 +453,78 @@ std::string FieldCoding::pyFormat(int type, bool bigendian)
         switch (size)
         {
             case 1:
-                letter = 'b';
+                letter = "b";
                 break;
             case 2:
-                letter = 'h';
+                letter = "h";
                 break;
             case 4:
-                letter = 'i';
+                letter = "i";
                 break;
             case 8:
-                letter = 'q';
+                letter = "q";
                 break;
             default:
-                letter = 'b';
+                letter = "B";
                 coeficient = size;
+                specialSize = true;
                 break;
         }
     }
 
     // Check if the type is signed - unsigned is capital letters
     if (isUnsigned)
-        letter = toupper(letter);
-
-    // Create a string with the letter to add to the format string
-    s_letter[0] = letter;
+        letter = toUpper(letter);
 
     // check that we have a valid type or just bytes
     if ( coeficient != 0)
-        format = quote + endian + std::to_string(coeficient) + s_letter + quote;
+        format = quote + endian + std::to_string(coeficient) + letter + quote;
+
     else
-        format = quote + endian + s_letter + quote;
+        format = quote + endian + letter + quote;
 
     // return the string with the endian symbol and the letter corresponding to type
     return format;
 
+}
+
+std::string FieldCoding::secondFormat(int fullSize, bool bigendian, bool unSigned)
+{
+    std::string format = "";
+    std::string letter = "";
+    std::string endian = "";
+    std::string quote  ="'";
+
+
+    if (bigendian)
+        endian = ">";
+    else
+        endian = "<";
+
+    switch (fullSize)
+    {
+        case 1:
+            letter = "b";
+            break;
+        case 2:
+            letter = "h";
+            break;
+        case 4:
+            letter = "i";
+            break;
+        case 8:
+            letter = "q";
+            break;
+        default:
+            break;
+    }
+
+    // Check if the type is signed - unsigned is capital letters
+    if (unSigned)
+        letter = toUpper(letter);
+
+    format = quote + endian + letter + quote;
+    return format;
 }
 
 
@@ -541,7 +579,7 @@ std::string FieldCoding::fullPyEncodeFunction(int type, bool bigendian)
     std::string comment   = pyEncodeComment(type, bigendian);
     std::string format    = pyFormat(type, bigendian);
 
-    std::string function = pyEncodeFunction(signature, comment, format, type);
+    std::string function = pyEncodeFunction(signature, comment, format, type, bigendian);
 
     return function;
 }
@@ -571,35 +609,56 @@ std::string FieldCoding::pyEncodeComment(int type, bool bigendian)
     return comment;
 }
 
-std::string FieldCoding::pyEncodeFunction(std::string signature, std::string comment, std::string format, int type)
+std::string FieldCoding::pyEncodeFunction(std::string signature, std::string comment, std::string format, int type, bool bigendian)
 {
-    std::string max;
-    std::string min;
+    std::string max = "0";
+    std::string min = "0";
 
-    switch(typeSizes[type])
+    if (typeUnsigneds[type])
     {
-    default:
-    case 1: max = "127"; break;
-    case 2: max = "32767"; break;
-    case 3: max = "8388607"; break;
-    case 4: max = "2147483647"; break;
-    case 5: max = "549755813887"; break;
-    case 6: max = "140737488355327"; break;
-    case 7: max = "36028797018963967"; break;
-    case 8: max = "sys.maxsize"; break;
+
+        switch(typeSizes[type])
+        {
+        default:
+        case 1: max = "255"; break;
+        case 2: max = "65535"; break;
+        case 3: max = "16777215"; break;
+        case 4: max = "4294967295"; break;
+        case 5: max = "1099511627775"; break;
+        case 6: max = "281474976710655"; break;
+        case 7: max = "72057594037927935"; break;
+        case 8: max = "18446744073709551615"; break;
+        }
     }
-
-    switch(typeSizes[type])
+    else
     {
-    default:
-    case 1: min = "(-127 - 1)"; break;
-    case 2: min = "(-32767 - 1)"; break;
-    case 3: min = "(-8388607 - 1)"; break;
-    case 4: min = "(-2147483647 - 1)"; break;
-    case 5: min = "(-549755813887 - 1)"; break;
-    case 6: min = "(-140737488355327 - 1)"; break;
-    case 7: min = "(-36028797018963967 - 1)"; break;
-    case 8: min = "(-sys.maxsize - 1)"; break;
+
+        switch(typeSizes[type])
+        {
+        default:
+        case 1: max = "127"; break;
+        case 2: max = "32767"; break;
+        case 3: max = "8388607"; break;
+        case 4: max = "2147483647"; break;
+        case 5: max = "549755813887"; break;
+        case 6: max = "140737488355327"; break;
+        case 7: max = "36028797018963967"; break;
+        case 8: max = "sys.maxsize"; break;
+        }
+
+        switch(typeSizes[type])
+        {
+        default:
+        case 1: min = "(-127 - 1)"; break;
+        case 2: min = "(-32767 - 1)"; break;
+        case 3: min = "(-8388607 - 1)"; break;
+        case 4: min = "(-2147483647 - 1)"; break;
+        case 5: min = "(-549755813887 - 1)"; break;
+        case 6: min = "(-140737488355327 - 1)"; break;
+        case 7: min = "(-36028797018963967 - 1)"; break;
+        case 8: min = "(-sys.maxsize - 1)"; break;
+        }
+
     }
 
     std::string tab = "    ";
@@ -610,10 +669,54 @@ std::string FieldCoding::pyEncodeFunction(std::string signature, std::string com
     function += comment;
 
     function += tab + "if number > " + max + ":\n" + tab + tab + "number = " + max + "\n";
-    function += tab + "if number < " + min + ":\n" + tab + tab + "number = " + min + "\n";
+    function += tab + "if number < " + min + ":\n" + tab + tab + "number = " + min + "\n\n";
+
+    if (specialSize) {
+        specialSize = false;
+        function = pyEncodeSpecialSize(function, format, type, bigendian);
+        return function;
+    }
 
     function += tab + "pack_into(" + format + ", "  + encode_args + ")\n";
     function += tab + "index += " + bytes + "\n" + tab + "return index\n\n";
+
+    return function;
+
+}
+
+std::string FieldCoding::pyEncodeSpecialSize(std::string function, std::string format, int type, bool bigendian)
+{
+    std::string sign   = "";
+    std::string endian = "";
+    std::string bytes  = "";
+
+    // Determine the if the type is signed
+    if(typeUnsigneds[type])
+        sign = "False";
+    else
+        sign = "True";
+
+    // determine if the type is be/le
+    if ( bigendian )
+        endian = "'big', ";
+    else
+        endian = "'little', ";
+
+    // extract the bytes for the packing function
+    for ( int i = 0; i < typeSizes[type]; i++)
+    {
+        bytes += "n_byte[" + std::to_string(i) + "], ";
+
+    }
+
+    // chops of extranious comma
+    bytes =  bytes.substr(0, bytes.find_last_of(","));
+
+
+    function += "    n_byte = number.to_bytes(" + std::to_string(typeSizes[type]) + ", " + endian + "signed=" + sign + ")\n\n";
+    function += "    pack_into(" + format + ", index, " + bytes + ")\n";
+
+    function += "    index += " + std::to_string(typeSizes[type]) + "\n    return index\n\n";
 
     return function;
 }
@@ -672,23 +775,92 @@ std::string FieldCoding::fullPyDecodeFunction(int type, bool bigendian)
     std::string comment   = pyDecodeComment(type, bigendian);
     std::string format    = pyFormat(type, bigendian);
 
-    std::string function = pyDecodeFunction(signature, comment, format);
+    std::string function = pyDecodeFunction(signature, comment, format, type, bigendian);
 
     return function;
 }
 
-std::string FieldCoding::pyDecodeFunction(std::string signature, std::string comment, std::string format)
+std::string FieldCoding::pyDecodeFunction(std::string signature, std::string comment, std::string format, int type, bool bigendian)
 {
     std::string function_args = "byteA, index";
     std::string unpack_args = format + ", byteA, offset=index[0]";
 
     std::string function = "def " + signature + "(" + function_args + "):\n";
     function += comment;
+
+    if (specialSize) {
+        specialSize = false;
+        function = pyDecodeSpecialSize(function, format, type, bigendian);
+        return function;
+    }
+
     function += "    number = unpack_from(" + unpack_args + ")\n";
-    function += "    index[0] = index[0] + 2 \n    return number[0]\n \n \n";
+    function += "    index[0] = index[0] + " + std::to_string(typeSizes[type]) + "\n    return number[0]\n\n\n";
 
     return function;
 
+
+}
+
+std::string FieldCoding::pyDecodeSpecialSize(std::string function, std::string format, int type, bool bigendian)
+{
+    int size = typeSizes[type];
+    int fullSize;
+    std::string format2 = "";
+
+    if (size == 3)
+        fullSize = 4;               ///TODO: check that if fits for the usigned case or promote to 8
+    if ( size > 4 and size < 8)
+        fullSize = 8;
+
+    format2 = secondFormat(fullSize, bigendian, typeUnsigneds[type]);
+
+    std::string s_size = std::to_string(size);
+    std::string s_fullSize = std::to_string(fullSize);
+    std::string pad = "0";
+
+    function += "    n_byte     = unpack_from(" + format + ", byteA, offset=index[0])\n";
+    function += "    full_bytes = bytearray(" + s_fullSize + ")\n\n";
+
+    if(!typeUnsigneds[type]) {
+        function += "    # determine byte extesion value\n    pad = 0\n    if (n_byte[0] >> 7) == 1:\n        pad = 255\n";
+        pad = "pad";
+    }
+
+    if (bigendian)
+    {
+        function += "    # transfer the unpacked bytes into the fullsized type\n";
+        for ( int i = 0; i < fullSize; i++)
+        {
+            if ( i < (fullSize - size))
+                function += "    full_bytes[" + std::to_string(i) + "] = " + pad + "\n";
+            else
+            {
+                function += "    full_bytes[" + std::to_string(i) + "] = n_byte[";
+                function += std::to_string(i - (fullSize - size)) + "]\n";
+            }
+        }
+        function += "\n";
+    }
+    else
+    {
+        function += "    # transfer the unpacked bytes into the fullsized type\n";
+        for ( int i = fullSize - 1; i >= 0; i-- )
+        {
+            if ( i >= size)
+                function += "    full_bytes[" + std::to_string(i) + "] = " + pad + "\n";
+            else
+            {
+                function += "    full_bytes[" + std::to_string(i) + "] = n_byte[" + std::to_string(i) + "]\n";
+            }
+        }
+        function += "\n";
+    }
+
+    function += "    # unpack the full sized value\n    number = unpack_from(" + format2 + ", full_bytes, 0)\n\n";
+    function += "    # update the index and return the first element of the tuple\n    index[0] = index[0] + 3\n    return number[0]\n";
+
+    return function;
 }
 
 std::string FieldCoding::pyDecodeComment(int type, bool bigendian)
@@ -704,7 +876,7 @@ std::string FieldCoding::pyDecodeComment(int type, bool bigendian)
                     args += "            since you cannot pass an integer by reference\n\n";
 
     std::string returns = R"(    Returns:
-        number (TODO): return the number decoded from the byte stream)";
+        number (int): return the number decoded from the byte stream)";
                 returns += "\n";
 
     std::string quotes = R"(    """)";
@@ -719,6 +891,7 @@ std::string FieldCoding::pyDecodeComment(int type, bool bigendian)
     return comment;
 
 }
+
 
 
 
