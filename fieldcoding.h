@@ -16,109 +16,6 @@ public:
 
 protected:
 
-    /////// Python class ////////////////
-
-    //! generate the signature for encode and decode
-    std::string pySignature(int type, bool bigendian, bool encode);
-
-    //! generate the format string for base types
-    std::string pyFormat(int type, bool bigendian);
-
-    //! generate the second format string for the special size case
-    std::string secondFormat(int fullSize, bool bigendian, bool unSigned);
-
-    //! Generate the encode source file
-    bool generatePyEncodeSource(void);
-
-    //! Generate the full encode function and all its peices
-    std::string fullPyEncodeFunction(int type, bool bigendian);
-
-    //! Generate the doc string for the encode functions
-    std::string pyEncodeComment(int type, bool bigendian);
-
-    //! build the function from the signature, comment and format string
-    std::string pyEncodeFunction(std::string signature, std::string comment, std::string format, int type, bool bigendian);
-
-    //! encode the non standard size types like 24, 40, 48, 56
-    std::string pyEncodeSpecialSize(std::string function, std::string format, int type, bool bigendian);
-
-    //! Generate the decode source file
-    bool generatePyDecodeSource(void);
-
-    //! Generate the full decode function and all its peices
-    std::string fullPyDecodeFunction(int type, bool bigendian);
-
-    //! Generate the doc string for the decode functions
-    std::string pyDecodeComment(int type, bool bigendian);
-
-    //! build the function from the signature, comment and format string
-    std::string pyDecodeFunction(std::string signature, std::string comment, std::string format, int type, bool bigendian);
-
-    //! decode the non standard size types like 24, 40, 48, 56
-    std::string pyDecodeSpecialSize(std::string function, std::string format, int type, bool bigendian);
-
-
-    //// end python class /////////////////////
-
-    //// C class /////////////////////////////
-
-    //! Generate the encode header file
-    bool generateEncodeHeader(void);
-
-    //! Generate the encode source file
-    bool generateEncodeSource(void);
-
-    //! Generate the helper functions in the encode source file
-    void generateEncodeHelpers(void);
-
-    //! Generate the decode header file
-    bool generateDecodeHeader(void);
-
-    //! Generate the decode source file
-    bool generateDecodeSource(void);
-
-    //! Generate the full comment for the encode function
-    std::string fullEncodeComment(int type, bool bigendian);
-
-    //! Generate the encode function signature
-    std::string encodeSignature(int type, bool bigendian);
-
-    //! Generate the full encode function
-    std::string fullEncodeFunction(int type, bool bigendian);
-
-    //! Generate the float encode function
-    std::string floatEncodeFunction(int type, bool bigendian);
-
-    //! Generate the integer encode function
-    std::string integerEncodeFunction(int type, bool bigendian);
-
-    //! Generate the one line brief comment for the decode function
-    std::string briefDecodeComment(int type, bool bigendian);
-
-    //! Generate the full comment for the decode function
-    std::string fullDecodeComment(int type, bool bigendian);
-
-    //! Generate the decode function signature
-    std::string decodeSignature(int type, bool bigendian);
-
-    //! Generate the full decode function
-    std::string fullDecodeFunction(int type, bool bigendian);
-
-    //! Generate the float decode function
-    std::string floatDecodeFunction(int type, bool bigendian);
-
-    //! Generate the integer decode function
-    std::string integerDecodeFunction(int type, bool bigendian);
-
-    //// Remaining stuff ////////////////////
-
-    //! Get a human readable type name like "unsigned 3 byte integer".
-    std::string getReadableTypeName(int type);
-
-    //! Generate the one line brief comment for the encode function
-    std::string briefEncodeComment(int type, bool bigendian);
-
-
     //! List of built in type names
     std::vector<std::string> typeNames;
 
@@ -130,8 +27,6 @@ protected:
 
     std::vector<bool> typeUnsigneds;
 
-private:
-    bool specialSize;
 };
 
 class shared
@@ -143,13 +38,13 @@ public:
            const std::vector<int> &typeSizes, const std::vector<bool> &typeUnsigneds);
 
     //! Generate the encode header file
-    virtual bool generateEncodeHeader(void) = 0;
+    virtual bool generateEncodeHeader(ProtocolHeaderFile *header) = 0;
 
     //! Generate the encode source file
     virtual bool generateEncodeSource(ProtocolSourceFile *source) = 0;
 
     //! Generate the decode header file
-    virtual bool generateDecodeHeader(void) = 0;
+    virtual bool generateDecodeHeader(ProtocolHeaderFile *header) = 0;
 
     //! Generate the decode source file
     virtual bool generateDecodeSource(ProtocolSourceFile *source) = 0;
@@ -176,29 +71,28 @@ class PythonCoding : public shared
 {
 public:
 
-    /// TODO: constructor
     PythonCoding(const ProtocolSupport &sup, const std::vector<std::string> &typeNames, const std::vector<std::string> &typeSigNames,
                  const std::vector<int> &typeSizes, const std::vector<bool> &typeUnsigneds);
 
     //! Generate the encode header file
-    bool generateEncodeHeader(void);
+    bool generateEncodeHeader(ProtocolHeaderFile *header);
 
     //! Generate the encode source file
     bool generateEncodeSource(ProtocolSourceFile *source);
 
     //! Generate the decode header file
-    bool generateDecodeHeader(void);
+    bool generateDecodeHeader(ProtocolHeaderFile *header);
 
     //! Generate the decode source file
     bool generateDecodeSource(ProtocolSourceFile *source);
 
 protected:
 
-    //!
+    //! Encodes a simple explanation of the encode process
     std::string briefEncodeComment(int type, bool bigendian);
 
+    //! Encodes a simple explanation of the decode process
     std::string briefDecodeComment(int type, bool bigendian);
-
 
     //! Get a human readable type name like "unsigned 3 byte integer"
     std::string getReadableTypeName(int type);
@@ -236,19 +130,6 @@ protected:
     //! decode the non standard size types like 24, 40, 48, 56
     std::string pyDecodeSpecialSize(std::string function, std::string format, int type, bool bigendian);
 
-//    //! List of built in type names
-//    const std::vector<std::string> &typeNames;
-
-//    //! List of type names in function signature
-//    const std::vector<std::string> &typeSigNames;
-
-//    //! Size of built in types
-//    const std::vector<int> &typeSizes;
-
-//    const std::vector<bool> &typeUnsigneds;
-
-//    const ProtocolSupport &support;
-
 private:
     //! true if the size is non standard
     bool specialSize;
@@ -256,29 +137,35 @@ private:
 };
 
 
-
-
-class CandCppCoding
+class CandCppCoding : public shared
 {
 public:
 
-    /// TODO: constructor
     CandCppCoding(const ProtocolSupport &sup, const std::vector<std::string> &typeNames, const std::vector<std::string> &typeSigNames,
                   const std::vector<int> &typeSizes, const std::vector<bool> &typeUnsigneds);
 
     //! Generate the encode header file
-    bool generateEncodeHeader(void);
+    bool generateEncodeHeader(ProtocolHeaderFile *header);
 
     //! Generate the encode source file
-    bool generateEncodeSource(void);
+    bool generateEncodeSource(ProtocolSourceFile *source);
 
     //! Generate the decode header file
-    bool generateDecodeHeader(void);
+    bool generateDecodeHeader(ProtocolHeaderFile *header);
 
     //! Generate the decode source file
-    bool generateDecodeSource(void);
+    bool generateDecodeSource(ProtocolSourceFile *source);
 
 protected:
+
+    //! Get a human readable type name like "unsigned 3 byte integer".
+    std::string getReadableTypeName(int type);
+
+    //! Generate the one line brief comment for the encode function
+    std::string briefEncodeComment(int type, bool bigendian);
+
+    //! Generate the one line brief comment for the decode function
+    std::string briefDecodeComment(int type, bool bigendian);
 
     //! Generate the helper functions in the encode source file
     void generateEncodeHelpers(void);
@@ -313,18 +200,6 @@ protected:
     //! Generate the integer decode function
     std::string integerDecodeFunction(int type, bool bigendian);
 
-//    //! List of built in type names
-//    const std::vector<std::string> &typeNames;
-
-//    //! List of type names in function signature
-//    const std::vector<std::string> &typeSigNames;
-
-//    //! Size of built in types
-//    const std::vector<int> &typeSizes;
-
-//    const std::vector<bool> &typeUnsigneds;
-
-//    const ProtocolSupport &support;
 };
 
 
