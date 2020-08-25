@@ -37,6 +37,8 @@ public:
     shared(const ProtocolSupport &sup, const std::vector<std::string> &typeNames, const std::vector<std::string> &typeSigNames,
            const std::vector<int> &typeSizes, const std::vector<bool> &typeUnsigneds);
 
+    virtual ~shared() {;}
+
     //! Generate the encode header file
     virtual bool generateEncodeHeader(ProtocolHeaderFile *header) = 0;
 

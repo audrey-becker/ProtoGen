@@ -211,7 +211,6 @@ void ProtocolFile::writeIncludeDirective(const std::string& include, const std::
 
     if(support.language == ProtocolSupport::python_language)
     {
-
         writePyIncludeDirective(include, comment);
         return;
     }
@@ -279,7 +278,10 @@ void ProtocolFile::writePyIncludeDirective(const std::string& include, const std
 
     directive = removeExtension(include);
 
-    directive = "from " + directive + " import *";
+    if (comment == "regular")
+        directive = "import " + directive;
+    else
+        directive = "from " + directive + " import *";
 
     /// TODO: figure out path information
 
@@ -288,7 +290,7 @@ void ProtocolFile::writePyIncludeDirective(const std::string& include, const std
         return;
 
     // Add the comment if there is one
-    if(comment.empty())
+    if(comment.empty() or comment != "regular")
         directive += "\n";
     else
         directive += "\t# " + comment + "\n";

@@ -85,7 +85,7 @@ bool FieldCoding::generate(std::vector<std::string>& fileNameList, std::vector<s
     }
     else
     {
-        // delete news
+        delete generator;
         return false;
     }
     if(generator->generateEncodeSource(&source))
@@ -95,7 +95,7 @@ bool FieldCoding::generate(std::vector<std::string>& fileNameList, std::vector<s
     }
     else
     {
-        // delete news
+        delete generator;
         return false;
     }
 
@@ -106,7 +106,7 @@ bool FieldCoding::generate(std::vector<std::string>& fileNameList, std::vector<s
     }
     else
     {
-        // delete news
+        delete generator;
         return false;
     }
 
@@ -117,13 +117,11 @@ bool FieldCoding::generate(std::vector<std::string>& fileNameList, std::vector<s
     }
     else
     {
-        // delete news
+        delete generator;
         return false;
     }
 
-    /// TODO: Does this actually delete, or do I need to make a member destructor implimented by both classes
-    delete [] &generator;
-    generator = nullptr;
+    delete generator;
     return true;
 }
 
@@ -1197,10 +1195,10 @@ bool PythonCoding::generateEncodeSource(ProtocolSourceFile *source)
     source->setModuleNameAndPath("fieldencode", support.outputpath, support.language);
 
     source->writeIncludeDirective("struct");
-    source->writeIncludeDirective("sys");
+    source->writeIncludeDirective("sys", "regular");
 
 //    if(support.specialFloat)
-//        source.writeIncludeDirective("floatspecial"); // TODO: py version of source functions
+//        source.writeIncludeDirective("floatspecial"); /// TODO: py version of source functions
 
 
     if(support.int64)
@@ -1245,7 +1243,6 @@ bool PythonCoding::generateDecodeSource(ProtocolSourceFile *source)
     source->setModuleNameAndPath("fielddecode", support.outputpath, support.language);
 
     source->writeIncludeDirective("struct");
-    source->writeIncludeDirective("sys");
 
     /// TODO: py version of source functions
 //    if(support.specialFloat)
@@ -1608,10 +1605,12 @@ std::string PythonCoding::pyEncodeFunction(std::string signature, std::string co
         case 5: min = "(-549755813887 - 1)"; break;
         case 6: min = "(-140737488355327 - 1)"; break;
         case 7: min = "(-36028797018963967 - 1)"; break;
-        case 8: min = "(-sys.maxsize - 1)"; break;
+        case 8: min = "(-sys.maxsize - 1)"; break;   // 9223372036854775807
         }
 
     }
+
+    // add float sizes
 
     std::string tab = "    ";
     std::string bytes = std::to_string(typeSizes[type]);
@@ -1673,7 +1672,6 @@ std::string PythonCoding::pyEncodeSpecialSize(std::string function, std::string 
     return function;
 }
 
-
 std::string PythonCoding::fullPyDecodeFunction(int type, bool bigendian)
 {
     bool encode = false;
@@ -1730,7 +1728,7 @@ std::string PythonCoding::pyDecodeSpecialSize(std::string function, std::string 
     function += "    full_bytes = bytearray(" + s_fullSize + ")\n\n";
 
     if(!typeUnsigneds[type]) {
-        function += "    # determine byte extesion value\n    pad = 0\n    if (n_byte[0] >> 7) == 1:\n        pad = 255\n";
+        function += "    # determine byte extesion value\n    pad = 0\n    if (n_byte[0] >> 7) == 1:\n        pad = 255\n\n";
         pad = "pad";
     }
 

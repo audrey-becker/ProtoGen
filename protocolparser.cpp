@@ -15,6 +15,8 @@
 #include <filesystem>
 #include <fstream>
 
+#include <QDebug>
+
 // The version of the protocol generator is set here
 const std::string ProtocolParser::genVersion = "3.1.d";
 
