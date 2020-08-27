@@ -29,15 +29,15 @@ protected:
 
 };
 
-class shared
+class FieldcodingInterface
 {
 
 public:
 
-    shared(const ProtocolSupport &sup, const std::vector<std::string> &typeNames, const std::vector<std::string> &typeSigNames,
+    FieldcodingInterface(const ProtocolSupport &sup, const std::vector<std::string> &typeNames, const std::vector<std::string> &typeSigNames,
            const std::vector<int> &typeSizes, const std::vector<bool> &typeUnsigneds);
 
-    virtual ~shared() {;}
+    virtual ~FieldcodingInterface() {;}
 
     //! Generate the encode header file
     virtual bool generateEncodeHeader(ProtocolHeaderFile *header) = 0;
@@ -69,7 +69,7 @@ protected:
 };
 
 
-class PythonCoding : public shared
+class PythonCoding : public FieldcodingInterface
 {
 public:
 
@@ -117,8 +117,11 @@ protected:
     //! build the function from the signature, comment and format string
     std::string pyEncodeFunction(std::string signature, std::string comment, std::string format, int type, bool bigendian);
 
-    //! encode the non standard size types like 24, 40, 48, 56
+    //! encode the non standard size types including 24, 40, 48, 56
     std::string pyEncodeSpecialSize(std::string function, std::string format, int type, bool bigendian);
+
+    //! encode the non standard size floats including 16 and 24
+    std::string pyEncodeSpecialFloat(std::string function, int type, bool bigendian);
 
     //! Generate the full decode function and all its peices
     std::string fullPyDecodeFunction(int type, bool bigendian);
@@ -132,14 +135,17 @@ protected:
     //! decode the non standard size types like 24, 40, 48, 56
     std::string pyDecodeSpecialSize(std::string function, std::string format, int type, bool bigendian);
 
+    //! decode the non standard size floats including 16 and 24
+    std::string pyDecodeSpecialFloat(std::string function, int type, bool bigendian);
+
+
 private:
     //! true if the size is non standard
     bool specialSize;
-
 };
 
 
-class CandCppCoding : public shared
+class CandCppCoding : public FieldcodingInterface
 {
 public:
 
