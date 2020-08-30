@@ -134,6 +134,7 @@ CandCppCoding::CandCppCoding(const ProtocolSupport &sup, const std::vector<std::
 
 /*!
  * Generate the header file for protocol array scaling
+ * \param pointer to the protocol header file where the output is written
  * \return true if the file is generated.
  */
 bool CandCppCoding::generateEncodeHeader(ProtocolHeaderFile *header)
@@ -249,6 +250,7 @@ void bytesToLeBytes(const uint8_t* data, uint8_t* bytes, int* index, int num);)"
 
 /*!
  * Generate the source file for protocols caling
+ *  \param pointer to the protocol source file where the output is written
  * \return true if the file is generated.
  */
 bool CandCppCoding::generateEncodeSource(ProtocolSourceFile *source)
@@ -414,6 +416,7 @@ void bytesToLeBytes(const uint8_t* data, uint8_t* bytes, int* index, int num)
 
 /*!
  * Generate the header file for protocols caling
+ * \param pointer to the protocol header file where the output is written
  * \return true if the file is generated.
  */
 bool CandCppCoding::generateDecodeHeader(ProtocolHeaderFile *header)
@@ -516,6 +519,7 @@ void bytesFromLeBytes(uint8_t* data, const uint8_t* bytes, int* index, int num);
 
 /*!
  * Generate the source file for protocols caling
+ * \param pointer to the protocol source file where the output is written
  * \return true if the file is generated.
  */
 bool CandCppCoding::generateDecodeSource(ProtocolSourceFile *source)
@@ -1166,8 +1170,7 @@ std::string CandCppCoding::integerDecodeFunction(int type, bool bigendian)
 }// CandCppCoding::integerDecodeFunction
 
 
-/*! FieldcodingInterface Constructor
- */
+//! FieldcodingInterface Constructor
 FieldcodingInterface::FieldcodingInterface(const ProtocolSupport &sup, const std::vector<std::string> &typeNames, const std::vector<std::string> &typeSigNames,
        const std::vector<int> &typeSizes, const std::vector<bool> &typeUnsigneds) :
             typeNames(typeNames),
@@ -1179,9 +1182,7 @@ FieldcodingInterface::FieldcodingInterface(const ProtocolSupport &sup, const std
 {
 }
 
-// PYTHON CLASS
-/*! PythonCoding Constructor
- */
+//! PythonCoding Constructor
 PythonCoding::PythonCoding(const ProtocolSupport &sup, const std::vector<std::string> &typeNames, const std::vector<std::string> &typeSigNames,
                            const std::vector<int> &typeSizes, const std::vector<bool> &typeUnsigneds) :
     FieldcodingInterface(sup, typeNames, typeSigNames, typeSizes, typeUnsigneds), specialSize(false)
@@ -1189,6 +1190,9 @@ PythonCoding::PythonCoding(const ProtocolSupport &sup, const std::vector<std::st
 }
 
 /*!
+ * Generate the encode source file for protocols caling
+ *  \param pointer to the protocol source file where the output is written
+ * \return true if the file is generated.
  */
 bool PythonCoding::generateEncodeSource(ProtocolSourceFile *source)
 {
@@ -1230,14 +1234,26 @@ bool PythonCoding::generateEncodeSource(ProtocolSourceFile *source)
     return source->flush();
 
 
-}
+} // PythonCoding::generateEncodeSource
 
+
+/*!
+ * Return since python does not have header files
+ *  \param pointer to the protocol header file where the output is written
+ * \return true if the file is generated.
+ */
 bool PythonCoding::generateEncodeHeader(ProtocolHeaderFile *header)
 {
     (void) header;
     return true;
-}
+} // PythonCoding::generateEncodeHeader
 
+
+/*!
+ * Generate the decode source file for protocols caling
+ *  \param pointer to the protocol source file where the output is written
+ * \return true if the file is generated.
+ */
 bool PythonCoding::generateDecodeSource(ProtocolSourceFile *source)
 {
     source->setModuleNameAndPath("fielddecode", support.outputpath, support.language);
@@ -1279,13 +1295,19 @@ bool PythonCoding::generateDecodeSource(ProtocolSourceFile *source)
 
     return source->flush();
 
-}
+} // PythonCoding::generateDecodeSource
 
+
+/*!
+ * Return since python does not have header files
+ *  \param pointer to the protocol source file where the output is written
+ * \return true if the file is generated.
+ */
 bool PythonCoding::generateDecodeHeader(ProtocolHeaderFile *header)
 {
     (void) header;
     return true;
-}
+} // PythonCoding::generateDecodeHeader
 
 
 /*!
@@ -1316,7 +1338,7 @@ std::string PythonCoding::briefEncodeComment(int type, bool bigendian)
 
     }// If multi-byte
 
-}// PythonCoding::briefEncodeComment
+} // PythonCoding::briefEncodeComment
 
 /*!
  * Create the brief decode function comment, without doxygen decorations
@@ -1346,7 +1368,7 @@ std::string PythonCoding::briefDecodeComment(int type, bool bigendian)
 
     }// If multi-byte
 
-}// PythonCoding::briefDecodeComment
+} // PythonCoding::briefDecodeComment
 
 /*!
  * Get a human readable type name like "unsigned 3 byte integer".
@@ -1379,8 +1401,14 @@ std::string PythonCoding::getReadableTypeName(int type)
 
     return name;
 
-}// PythonCoding::getReadableTypeName
+} // PythonCoding::getReadableTypeName
 
+/*!
+ * Generate the function name
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \return function name
+ */
 std::string PythonCoding::pySignature(int type, bool bigendian, bool encode)
 {
     std::string endian    = "";
@@ -1400,8 +1428,14 @@ std::string PythonCoding::pySignature(int type, bool bigendian, bool encode)
 
     return typeSigNames[type] + to_from + endian + "Bytes";
 
-}
+} // PythonCoding::pySignature
 
+/*!
+ * generate the format string for based on size and signed value
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \return format string
+ */
 std::string PythonCoding::pyFormat(int type, bool bigendian)
 {
     //    char      - b     longlong  - q
@@ -1473,8 +1507,15 @@ std::string PythonCoding::pyFormat(int type, bool bigendian)
     // return the string with the endian symbol and the letter corresponding to type
     return format;
 
-}
+} // PythonCoding::pyFormat
 
+/*!
+ * Generate the type promoted format string for non standard sizes
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \param fullsize is the type promotion of non standard sizes
+ * \return type promoted format string
+ */
 std::string PythonCoding::secondFormat(int fullSize, bool bigendian, bool unSigned)
 {
     std::string format = "";
@@ -1512,8 +1553,15 @@ std::string PythonCoding::secondFormat(int fullSize, bool bigendian, bool unSign
 
     format = quote + endian + letter + quote;
     return format;
-}
+} // PythonCoding::secondFormat
 
+
+/*!
+ * generate the encode functions and all the peices
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \return entire encode function for size and endian
+ */
 std::string PythonCoding::fullPyEncodeFunction(int type, bool bigendian)
 {
     bool encode = true;
@@ -1525,8 +1573,15 @@ std::string PythonCoding::fullPyEncodeFunction(int type, bool bigendian)
     std::string function = pyEncodeFunction(signature, comment, format, type, bigendian);
 
     return function;
-}
+} // PythonCoding::fullPyEncodeFunction
 
+
+/*!
+ * Write the encode python docstring including summary, args, and return
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \return docstring
+ */
 std::string PythonCoding::pyEncodeComment(int type, bool bigendian)
 {
     std::string summary = briefEncodeComment(type, bigendian) + "\n\n"; // NOTE: incorrect cause of no xml
@@ -1554,8 +1609,18 @@ std::string PythonCoding::pyEncodeComment(int type, bool bigendian)
 
 
     return comment;
-}
+} // PythonCoding::pyEncodeComment
 
+
+/*!
+ * Generate the encode function
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \param signature is the function name
+ * \param comment is the docstring for the python function
+ * \param format is the string that specifies the type to be packed orunpacked
+ * \return string with the encode function
+ */
 std::string PythonCoding::pyEncodeFunction(std::string signature, std::string comment, std::string format, int type, bool bigendian)
 {
     std::string max = "0";
@@ -1649,8 +1714,17 @@ std::string PythonCoding::pyEncodeFunction(std::string signature, std::string co
 
     return function;
 
-}
+} // PythonCoding::pyEncodeFunction
 
+
+/*!
+ * encode the non standard size floats including 16, 24, 40, 48, and 56
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \param format is the string that specifies the type to be packed orunpacked
+ * \param function is the whole function up to this point
+ * \return special size function based on size and endian
+ */
 std::string PythonCoding::pyEncodeSpecialSize(std::string function, std::string format, int type, bool bigendian)
 {
     std::string sign   = "";
@@ -1686,9 +1760,16 @@ std::string PythonCoding::pyEncodeSpecialSize(std::string function, std::string 
     function += "    index += " + std::to_string(typeSizes[type]) + "\n    return index\n\n";
 
     return function;
-}
+} // PythonCoding::pyEncodeSpecialSize
 
-//! encode the non standard size floats including 16 and 24
+
+/*!
+ * encode the non standard size floats including 16 and 24
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \param function is the whole function up to this point
+ * \return special float function based on size and endian
+ */
 std::string PythonCoding::pyEncodeSpecialFloat(std::string function, int type, bool bigendian)
 {
     std::string endian = "";
@@ -1699,12 +1780,19 @@ std::string PythonCoding::pyEncodeSpecialFloat(std::string function, int type, b
         endian = "Le";
 
     if(typeSizes[type] == 3)
-        return function += "    uint24To" + endian + "Bytes(float32ToFloat24(number, sigbits), bytes, index)\n";
+        return function += "    uint24To" + endian + "Bytes(byteA, index, float32ToFloat24(number, sigbits))\n";
     else
-        return function += "    uint16To" + endian + "Bytes(float32ToFloat16(number, sigbits), bytes, index)\n";
+        return function += "    uint16To" + endian + "Bytes(byteA, index, float32ToFloat16(number, sigbits))\n";
 
-}
+} // PythonCoding::pyEncodeSpecialFloat
 
+
+/*!
+ * Generate the whole decode funcion and the peices
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \return decode function based of size and endian
+ */
 std::string PythonCoding::fullPyDecodeFunction(int type, bool bigendian)
 {
     bool encode = false;
@@ -1716,8 +1804,18 @@ std::string PythonCoding::fullPyDecodeFunction(int type, bool bigendian)
     std::string function = pyDecodeFunction(signature, comment, format, type, bigendian);
 
     return function;
-}
+} // PythonCoding::fullPyDecodeFunction
 
+
+/*!
+ * Creates the decode function from its peices
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \param signature is the function name
+ * \param comment is the docstring for the python function
+ * \param format is the string that specifies the type to be packed orunpacked
+ * \return decode function
+ */
 std::string PythonCoding::pyDecodeFunction(std::string signature, std::string comment, std::string format, int type, bool bigendian)
 {
     std::string function_args = "byteA, index";
@@ -1750,7 +1848,7 @@ std::string PythonCoding::pyDecodeFunction(std::string signature, std::string co
         std::string bits = std::to_string(typeSizes[type] * 8);
 
         function += "    # Verify that the unpacked float is valid\n";
-        function += "    if isFloat" + bits + "Valid(float" + bits + "ToInt(number[0])) is true:\n";
+        function += "    if isFloat" + bits + "Valid(float" + bits + "ToInt(number[0])) is True:\n";
         function += "        return number[0]\n    else:\n        return 0\n\n\n";
         return function;
     }
@@ -1759,8 +1857,17 @@ std::string PythonCoding::pyDecodeFunction(std::string signature, std::string co
     return function;
 
 
-}
+} // PythonCoding::pyDecodeFunction
 
+
+/*!
+ * Decode non standard size types including 16, 24, 40, 48, and 56
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \param format is the string that specifies the type to be packed orunpacked
+ * \param function is the whole function up to this point
+ * \return decode function for non standard size
+ */
 std::string PythonCoding::pyDecodeSpecialSize(std::string function, std::string format, int type, bool bigendian)
 {
     int size = typeSizes[type];
@@ -1820,9 +1927,16 @@ std::string PythonCoding::pyDecodeSpecialSize(std::string function, std::string 
     function += "    # update the index and return the first element of the tuple\n    index[0] = index[0] + " + s_size + "\n    return number[0]\n";
 
     return function;
-}
+} // PythonCoding::pyDecodeSpecialSize
 
-//! decode the non standard size floats including 16 and 24
+
+/*!
+ * Decode the non standard size floats including 16 and 24
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \param function is the whole function up to this point
+ * \return decode function for non standard float sizes
+ */
 std::string PythonCoding::pyDecodeSpecialFloat(std::string function, int type, bool bigendian)
 {
     std::string endian = "";
@@ -1838,8 +1952,15 @@ std::string PythonCoding::pyDecodeSpecialFloat(std::string function, int type, b
         return function += "    return float16ToFloat32(uint16From" + endian + "Bytes(byteA, index), sigbits)\n";
 
 
-}
+} // PythonCoding::pyDecodeSpecialFloat
 
+
+/*!
+ * Create the python docstring with summary, args, and return
+ * \param type is the type enumeration
+ * \param bigendian is a boolian which determines big or little endian
+ * \return return python docstring for decode functions
+ */
 std::string PythonCoding::pyDecodeComment(int type, bool bigendian)
 {
     std::string summary = briefDecodeComment(type, bigendian) + "\n\n";
@@ -1866,7 +1987,8 @@ std::string PythonCoding::pyDecodeComment(int type, bool bigendian)
 
     return comment;
 
-}
+} // PythonCoding::pyDecodeComment
+
 
 
 

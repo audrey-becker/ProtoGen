@@ -235,7 +235,7 @@ def float32ToFloat24(value, sigbits):
     signedExponent = unsignedExponent.value - 127
 
     if signedExponent < -bias:
-        output = 0   # underflow to zero
+        output.value = 0   # underflow to zero
     else:
         if signedExponent > bias:
             # Largest possible exponent and significand without making a NaN or Inf

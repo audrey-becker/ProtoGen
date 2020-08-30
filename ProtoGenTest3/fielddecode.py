@@ -2,6 +2,7 @@
 
 from fielddecode import *
 from struct import *
+from floatspecial import *
 
 # supporting 64 bit sizes
 
@@ -13,7 +14,7 @@ def uint64FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 8
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -32,7 +33,7 @@ def uint64FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 8
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -51,7 +52,7 @@ def int64FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 8
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -70,7 +71,7 @@ def int64FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 8
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -89,7 +90,7 @@ def uint56FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 7
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -123,7 +124,7 @@ def uint56FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 7
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -157,7 +158,7 @@ def int56FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 7
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -196,7 +197,7 @@ def int56FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 7
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -235,7 +236,7 @@ def uint48FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 6
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -269,7 +270,7 @@ def uint48FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 6
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -303,7 +304,7 @@ def int48FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 6
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -342,7 +343,7 @@ def int48FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 6
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -381,7 +382,7 @@ def uint40FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 5
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -415,7 +416,7 @@ def uint40FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 5
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -449,7 +450,7 @@ def int40FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 5
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -488,7 +489,7 @@ def int40FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 5
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -529,7 +530,7 @@ def float32FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 4
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -552,7 +553,7 @@ def float32FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 4
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -575,7 +576,7 @@ def uint32FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 4
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -594,7 +595,7 @@ def uint32FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 4
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -613,7 +614,7 @@ def int32FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 4
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -632,7 +633,7 @@ def int32FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 4
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -651,7 +652,7 @@ def uint24FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 3
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -681,7 +682,7 @@ def uint24FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 3
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -711,7 +712,7 @@ def int24FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 3
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -746,7 +747,7 @@ def int24FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 3
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -781,7 +782,7 @@ def uint16FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 2
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -800,7 +801,7 @@ def uint16FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 2
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -819,7 +820,7 @@ def int16FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 2
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -838,7 +839,7 @@ def int16FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 2
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -857,7 +858,7 @@ def float64FromBeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 8
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -880,7 +881,7 @@ def float64FromLeBytes(byteA, index):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 8
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
 
 
     Returns:
@@ -903,7 +904,7 @@ def float24FromBeBytes(byteA, index, sigbits):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 3
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
         sigbits (int): the number of bits to use in the significand of the float.
 
     Returns:
@@ -935,7 +936,7 @@ def float16FromBeBytes(byteA, index, sigbits):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 2
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
         sigbits (int): the number of bits to use in the significand of the float.
 
     Returns:
@@ -951,7 +952,7 @@ def float16FromLeBytes(byteA, index, sigbits):
         index  (list): a list where index 0 is the location of the first
             byte in the byte stream and will be incremented by 2
             * this gurantees that the index will be updates
-            since you cannot pass an integer by reference
+              since you cannot pass an integer by reference
         sigbits (int): the number of bits to use in the significand of the float.
 
     Returns:

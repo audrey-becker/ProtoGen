@@ -5,6 +5,7 @@
 #include <QString>
 #include <QTextStream>
 
+//! \class FieldCoding generates functions to go from types to bytes or bytes to types
 class FieldCoding : public ProtocolScaling
 {
 public:
@@ -25,10 +26,12 @@ protected:
     //! Size of built in types
     std::vector<int> typeSizes;
 
+    //! list of bools to determine if a type is signed
     std::vector<bool> typeUnsigneds;
 
 };
 
+//! \class Interface class for either python or C and C++ for fieldcoding
 class FieldcodingInterface
 {
 
@@ -62,13 +65,16 @@ protected:
     //! Size of built in types
     const std::vector<int> &typeSizes;
 
+    //! list of bools to determine if a type is signed
     const std::vector<bool> &typeUnsigneds;
 
+    //! Whats supported by the protocol
     const ProtocolSupport &support;
 
 };
 
 
+//! \class PythonCoding for encoding and decoding functions in python
 class PythonCoding : public FieldcodingInterface
 {
 public:
@@ -145,6 +151,7 @@ private:
 };
 
 
+//! \class CandCppCoding for encoding and decoding functions in C or C++
 class CandCppCoding : public FieldcodingInterface
 {
 public:

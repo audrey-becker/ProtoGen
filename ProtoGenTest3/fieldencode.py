@@ -2,6 +2,7 @@
 
 from fieldencode import *
 from struct import *
+from floatspecial import *
 import sys	# regular
 
 # supporting 64 bit sizes
