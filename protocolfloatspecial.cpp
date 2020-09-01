@@ -24,7 +24,7 @@ bool ProtocolFloatSpecial::generate(std::vector<std::string>& fileNameList, std:
 
 
         // Check that Source and Header files are completed
-        if (generator->generateHeader(&header))
+        if (generator->generateHeader(header))
         {
             fileNameList.push_back(header.fileName());
             filePathList.push_back(header.filePath());
@@ -35,7 +35,7 @@ bool ProtocolFloatSpecial::generate(std::vector<std::string>& fileNameList, std:
             return false;
         }
 
-        if (generator->generateSource(&source))
+        if (generator->generateSource(source))
         {
             fileNameList.push_back(source.fileName());
             filePathList.push_back(source.filePath());
@@ -48,8 +48,6 @@ bool ProtocolFloatSpecial::generate(std::vector<std::string>& fileNameList, std:
 
         delete generator;
         return true;
-
-
      }
 
     return false;
@@ -65,7 +63,7 @@ FloatSpecialInterface::FloatSpecialInterface(const ProtocolSupport &sup) : suppo
 /*! Return since python does not have header files
  * \param header is a pointer to the protocol header file where the output goes
  */
-bool PythonFloatSpecial::generateHeader(ProtocolHeaderFile* header)
+bool PythonFloatSpecial::generateHeader(ProtocolHeaderFile &header)
 {
     (void) header;
     return true;
@@ -76,43 +74,43 @@ bool PythonFloatSpecial::generateHeader(ProtocolHeaderFile* header)
 /*! Generate the header file if the is language is Python
  * \param source is a pointer to the protocol source file where the output goes
  */
-bool PythonFloatSpecial::generateSource(ProtocolSourceFile* source)
+bool PythonFloatSpecial::generateSource(ProtocolSourceFile &source)
 {
 
-    source->setModuleNameAndPath("floatspecial", support.outputpath);
+    source.setModuleNameAndPath("floatspecial", support.outputpath);
 
 
-    source->write(R"(
+    source.write(R"(
 
 from ctypes import *
 from struct import *
 from math   import *
 
-def float32ToInt(value):
+def float32ToInt(value: float) -> int:
     """ Converts the bits of a float32 to type int with same bit pattern."""
     byteA = pack("f", value)
     integer = unpack("I", byteA)
     return integer[0]
 
-def float64ToInt(value):
+def float64ToInt(value: float) -> int:
     """ Converts the bits of a float64 to type int with same bit pattern."""
     byteA = pack("d", value)
     integer = unpack("q", byteA)
     return integer[0]
 
-def int32ToFloat(value):
+def int32ToFloat(value: int) -> float:
     """ Converts the bits of a int32 to type float32 with same bit pattern."""
     byteA = pack("I", value)
     Float = unpack("f", byteA)
     return Float[0]
 
-def int64ToFloat(value):
+def int64ToFloat(value: int) -> float:
     """ Converts the bits of a int64 to type float64 with same bit pattern."""
     byteA = pack("q", value)
     Float = unpack("d", byteA)
     return Float[0]
 
-def isFloat32Valid(value):
+def isFloat32Valid(value: float) -> bool:
     """ Check if a 32-bit field is a valid 32-bit IEEE-754 float.
 
         Args:
@@ -144,7 +142,7 @@ def isFloat32Valid(value):
     # If we get here then its a valid float
     return True
 
-def isFloat64Valid(value):
+def isFloat64Valid(value: float) -> bool:
     """ Check if a 64-bit field is a valid 64-bit IEEE-754 float.
 
         Args:
@@ -176,7 +174,7 @@ def isFloat64Valid(value):
     # If we get here then its a valid float
     return True
 
-def float32ToFloat24(value, sigbits):
+def float32ToFloat24(value: float, sigbits: int) -> int:
     """ Convert a 32-bit floating point value (IEEE-754 binary32) to 24-bit floating
         point representation with a variable number of bits for the significand.
 
@@ -235,7 +233,7 @@ def float32ToFloat24(value, sigbits):
     signedExponent = unsignedExponent.value - 127
 
     if signedExponent < -bias:
-        output = 0   # underflow to zero
+        output.value = 0   # underflow to zero
     else:
         if signedExponent > bias:
             # Largest possible exponent and significand without making a NaN or Inf
@@ -255,7 +253,7 @@ def float32ToFloat24(value, sigbits):
     # return the 24-bit representation
     return output.value
 
-def float24ToFloat32(value, sigbits):
+def float24ToFloat32(value: int, sigbits: int) -> float:
     """ Convert a 24-bit floating point representation with variable number of
         significand bits to binary32
 
@@ -297,7 +295,7 @@ def float24ToFloat32(value, sigbits):
 
     return int32ToFloat(Integer)
 
-def float32ToFloat16(value, sigbits):
+def float32ToFloat16(value: float, sigbits: int) -> int:
     """ Convert a 32-bit floating point value (IEEE-754 binary32) to 16-bit floating
         point representation with a variable number of bits for the significand
 
@@ -394,7 +392,7 @@ def float32ToFloat16(value, sigbits):
     # return the binary16 representation
     return output.value
 
-def float16ToFloat32(value, sigbits):
+def float16ToFloat32(value: int, sigbits: int) -> float:
     """ Convert a 16-bit floating point representation with variable number of
         significand bits to binary32
 
@@ -438,7 +436,7 @@ def float16ToFloat32(value, sigbits):
     return int32ToFloat(Integer)
 )");
 
-   source->write(R"(
+   source.write(R"(
 
 def testSpecialFloat():
     """Use this routine (and a debugger) to verify the special float functionality.
@@ -507,12 +505,12 @@ def testSpecialFloat():
 /*! Generate the header file if the is language is C or C++
  * \param header is a pointer to the protocol header file where the output goes
  */
-bool CandCppFloatSpecial::generateHeader(ProtocolHeaderFile* header)
+bool CandCppFloatSpecial::generateHeader(ProtocolHeaderFile &header)
 {
-    header->setModuleNameAndPath("floatspecial", support.outputpath);
+    header.setModuleNameAndPath("floatspecial", support.outputpath);
 
 // Raw string magic here
-header->setFileComment(R"(\brief Special routines for floating point manipulation
+header.setFileComment(R"(\brief Special routines for floating point manipulation
 
 These routines allow floating point values to be compressed to
 smaller formats by discarding resolution and dynamic range. This is
@@ -535,12 +533,12 @@ memory floating point numbers are always IEEE-754 binary32 or IEEE-754
 binary64. The in-memory representation of a float16 or float24 is actually
 an integer which can be encoded into a data message like any integer)");
 
-header->makeLineSeparator();
-header->writeIncludeDirective("stdint.h", std::string(), true);
-header->makeLineSeparator();
+header.makeLineSeparator();
+header.writeIncludeDirective("stdint.h", std::string(), true);
+header.makeLineSeparator();
 
 // Raw string magic here
-header->write(R"(//! Determine if a 32-bit field represents a valid 32-bit IEEE-754 floating point number.
+header.write(R"(//! Determine if a 32-bit field represents a valid 32-bit IEEE-754 floating point number.
 int isFloat32Valid(uint32_t value);
 
 //! Determine if a 64-bit field represents a valid 64-bit IEEE-754 floating point number.
@@ -561,9 +559,9 @@ float float16ToFloat32(uint16_t value, int sigbits);
 //! test the special float functionality
 int testSpecialFloat(void);)");
 
-header->makeLineSeparator();
+header.makeLineSeparator();
 
-return header->flush();
+return header.flush();
 
 }// ProtocolFloatSpecial::generateHeader
 
@@ -572,14 +570,14 @@ return header->flush();
 /*! Generate the source file if the is language is C or C++
  * \param source is a pointer to the protocol source file where the output goes
  */
-bool CandCppFloatSpecial::generateSource(ProtocolSourceFile* source)
+bool CandCppFloatSpecial::generateSource(ProtocolSourceFile &source)
 {
-    source->setModuleNameAndPath("floatspecial", support.outputpath);
-    source->writeIncludeDirective("math.h", "", true);
-    source->makeLineSeparator();
+    source.setModuleNameAndPath("floatspecial", support.outputpath);
+    source.writeIncludeDirective("math.h", "", true);
+    source.makeLineSeparator();
 
     // Raw string magic here
-source->write(R"===(/*!
+source.write(R"===(/*!
  * Determine if a 32-bit field represents a valid 32-bit IEEE-754 floating
  * point number. If the field is infinity, NaN, or de-normalized then it is
  * not valid. This determination is made without using any floating point
@@ -1043,9 +1041,9 @@ int testSpecialFloat(void)
 
 }// testSpecialFloat)===");
 
-    source->makeLineSeparator();
+    source.makeLineSeparator();
 
-    return source->flush();
+    return source.flush();
 
 }// ProtocolFloatSpecial::generateSource
 

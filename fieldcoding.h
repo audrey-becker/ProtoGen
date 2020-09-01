@@ -43,16 +43,16 @@ public:
     virtual ~FieldcodingInterface() {;}
 
     //! Generate the encode header file
-    virtual bool generateEncodeHeader(ProtocolHeaderFile *header) = 0;
+    virtual bool generateEncodeHeader(ProtocolHeaderFile &header) = 0;
 
     //! Generate the encode source file
-    virtual bool generateEncodeSource(ProtocolSourceFile *source) = 0;
+    virtual bool generateEncodeSource(ProtocolSourceFile &source) = 0;
 
     //! Generate the decode header file
-    virtual bool generateDecodeHeader(ProtocolHeaderFile *header) = 0;
+    virtual bool generateDecodeHeader(ProtocolHeaderFile &header) = 0;
 
     //! Generate the decode source file
-    virtual bool generateDecodeSource(ProtocolSourceFile *source) = 0;
+    virtual bool generateDecodeSource(ProtocolSourceFile &source) = 0;
 
 protected:
 
@@ -83,16 +83,16 @@ public:
                  const std::vector<int> &typeSizes, const std::vector<bool> &typeUnsigneds);
 
     //! Generate the encode header file
-    bool generateEncodeHeader(ProtocolHeaderFile *header);
+    bool generateEncodeHeader(ProtocolHeaderFile &header);
 
     //! Generate the encode source file
-    bool generateEncodeSource(ProtocolSourceFile *source);
+    bool generateEncodeSource(ProtocolSourceFile &source);
 
     //! Generate the decode header file
-    bool generateDecodeHeader(ProtocolHeaderFile *header);
+    bool generateDecodeHeader(ProtocolHeaderFile &header);
 
     //! Generate the decode source file
-    bool generateDecodeSource(ProtocolSourceFile *source);
+    bool generateDecodeSource(ProtocolSourceFile &source);
 
 protected:
 
@@ -160,16 +160,16 @@ public:
                   const std::vector<int> &typeSizes, const std::vector<bool> &typeUnsigneds);
 
     //! Generate the encode header file
-    bool generateEncodeHeader(ProtocolHeaderFile *header);
+    bool generateEncodeHeader(ProtocolHeaderFile &header);
 
     //! Generate the encode source file
-    bool generateEncodeSource(ProtocolSourceFile *source);
+    bool generateEncodeSource(ProtocolSourceFile &source);
 
     //! Generate the decode header file
-    bool generateDecodeHeader(ProtocolHeaderFile *header);
+    bool generateDecodeHeader(ProtocolHeaderFile &header);
 
     //! Generate the decode source file
-    bool generateDecodeSource(ProtocolSourceFile *source);
+    bool generateDecodeSource(ProtocolSourceFile &source);
 
 protected:
 

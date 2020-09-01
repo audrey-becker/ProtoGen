@@ -18,12 +18,48 @@
 
 class ProtocolScaling
 {
+    // friend class ScalingInterface;
+
 public:
     //! Construct the protocol scaling object
     ProtocolScaling(ProtocolSupport sup);
 
     //! Perform the generation, writing out the files
     bool generate(std::vector<std::string>& fileNameList, std::vector<std::string>& filePathList);
+
+protected:
+
+    //! Header file output object
+    ProtocolHeaderFile header;
+
+    //! Source file output object
+    ProtocolSourceFile source;
+
+    //! Whats supported by the protocol
+    ProtocolSupport support;
+};
+
+
+class ScalingInterface
+{
+
+public:
+
+    ScalingInterface(const ProtocolSupport &sup);
+
+    virtual ~ScalingInterface() {;}
+
+    //! Generate the encode header file
+    virtual bool generateEncodeHeader(ProtocolHeaderFile &header) = 0;
+
+    //! Generate the encode source file
+    virtual bool generateEncodeSource(ProtocolSourceFile &source) = 0;
+
+    //! Generate the decode header file
+    virtual bool generateDecodeHeader(ProtocolHeaderFile &header) = 0;
+
+    //! Generate the decode source file
+    virtual bool generateDecodeSource(ProtocolSourceFile &source) = 0;
 
 protected:
 
@@ -130,11 +166,32 @@ protected:
     //! Determine if both types are supported by this protocol
     bool areTypesSupported(inmemorytypes_t source, encodedtypes_t encoded) const;
 
+    //! Key information
+    const ProtocolSupport &support;
+
+
+};
+
+
+class CandCppScaledCoding : public ScalingInterface
+{
+public:
+
+    CandCppScaledCoding(const ProtocolSupport &sup) : ScalingInterface(sup) {;}
+
     //! Generate the encode header file
-    bool generateEncodeHeader(void);
+    bool generateEncodeHeader(ProtocolHeaderFile &header);
 
     //! Generate the encode source file
-    bool generateEncodeSource(void);
+    bool generateEncodeSource(ProtocolSourceFile &source);
+
+    //! Generate the decode header file
+    bool generateDecodeHeader(ProtocolHeaderFile &header);
+
+    //! Generate the decode source file
+    bool generateDecodeSource(ProtocolSourceFile &source);
+
+protected:
 
     //! Generate the one line brief comment for the encode function
     std::string briefEncodeComment(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
@@ -157,12 +214,6 @@ protected:
     //! Generate the full encode function for integer scaling
     std::string fullIntegerEncodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
 
-    //! Generate the decode header file
-    bool generateDecodeHeader(void);
-
-    //! Generate the decode source file
-    bool generateDecodeSource(void);
-
     //! Generate the one line brief comment for the decode function
     std::string briefDecodeComment(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
 
@@ -184,14 +235,32 @@ protected:
     //! Generate the full decode function for integer scaling
     std::string fullIntegerDecodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
 
-    //! Header file output object
-    ProtocolHeaderFile header;
 
-    //! Source file output object
-    ProtocolSourceFile source;
-
-    //! Whats supported by the protocol
-    ProtocolSupport support;
 };
+
+
+
+class PythonScaledCoding : public ScalingInterface
+{
+public:
+
+    PythonScaledCoding(const ProtocolSupport &sup) : ScalingInterface(sup) {;}
+
+    //! Generate the encode header file
+    bool generateEncodeHeader(ProtocolHeaderFile &header);
+
+    //! Generate the encode source file
+    bool generateEncodeSource(ProtocolSourceFile &source);
+
+    //! Generate the decode header file
+    bool generateDecodeHeader(ProtocolHeaderFile &header);
+
+    //! Generate the decode source file
+    bool generateDecodeSource(ProtocolSourceFile &source);
+
+
+
+};
+
 
 #endif // PROTOCOLSCALING_H

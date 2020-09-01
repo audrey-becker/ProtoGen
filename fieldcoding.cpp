@@ -78,7 +78,7 @@ bool FieldCoding::generate(std::vector<std::string>& fileNameList, std::vector<s
     if ( generator == nullptr)
           return false;
 
-    if(generator->generateEncodeHeader(&header))
+    if(generator->generateEncodeHeader(header))
     {
         fileNameList.push_back(header.fileName());
         filePathList.push_back(header.filePath());
@@ -88,7 +88,7 @@ bool FieldCoding::generate(std::vector<std::string>& fileNameList, std::vector<s
         delete generator;
         return false;
     }
-    if(generator->generateEncodeSource(&source))
+    if(generator->generateEncodeSource(source))
     {
         fileNameList.push_back(source.fileName());
         filePathList.push_back(source.filePath());
@@ -99,7 +99,7 @@ bool FieldCoding::generate(std::vector<std::string>& fileNameList, std::vector<s
         return false;
     }
 
-    if(generator->generateDecodeHeader(&header))
+    if(generator->generateDecodeHeader(header))
     {
         fileNameList.push_back(header.fileName());
         filePathList.push_back(header.filePath());
@@ -110,7 +110,7 @@ bool FieldCoding::generate(std::vector<std::string>& fileNameList, std::vector<s
         return false;
     }
 
-    if(generator->generateDecodeSource(&source))
+    if(generator->generateDecodeSource(source))
     {
         fileNameList.push_back(source.fileName());
         filePathList.push_back(source.filePath());
@@ -137,13 +137,13 @@ CandCppCoding::CandCppCoding(const ProtocolSupport &sup, const std::vector<std::
  * \param pointer to the protocol header file where the output is written
  * \return true if the file is generated.
  */
-bool CandCppCoding::generateEncodeHeader(ProtocolHeaderFile *header)
+bool CandCppCoding::generateEncodeHeader(ProtocolHeaderFile &header)
 {
 
-    header->setModuleNameAndPath("fieldencode", support.outputpath, support.language);
+    header.setModuleNameAndPath("fieldencode", support.outputpath, support.language);
 
 // Raw string magic
-header->setFileComment(R"(fieldencode provides routines to place numbers into a byte stream.
+header.setFileComment(R"(fieldencode provides routines to place numbers into a byte stream.
 
 fieldencode provides routines to place numbers in local memory layout into
 a big or little endian byte stream. The byte stream is simply a sequence of
@@ -174,17 +174,17 @@ have the same endianness then encoding data from memory into a byte stream
 is a simple copy. However if the endianness is not the same then bytes must
 be re-ordered for the data to be interpreted correctly.)");
 
-    header->makeLineSeparator();
-    header->write("\n#define __STDC_CONSTANT_MACROS\n");
-    header->write("#include <stdint.h>\n");
+    header.makeLineSeparator();
+    header.write("\n#define __STDC_CONSTANT_MACROS\n");
+    header.write("#include <stdint.h>\n");
 
     if(support.supportbool)
-        header->writeIncludeDirective("stdbool.h", "", true);
+        header.writeIncludeDirective("stdbool.h", "", true);
 
-    header->makeLineSeparator();
+    header.makeLineSeparator();
 
 // Raw string magic
-header->write(R"(//! Macro to limit a number to be no more than a maximum value
+header.write(R"(//! Macro to limit a number to be no more than a maximum value
 #define limitMax(number, max) (((number) > (max)) ? (max) : (number))
 
 //! Macro to limit a number to be no less than a minimum value
@@ -207,8 +207,8 @@ void bytesToLeBytes(const uint8_t* data, uint8_t* bytes, int* index, int num);)"
 
     if(support.int64)
     {
-        header->makeLineSeparator();
-        header->write("#ifdef UINT64_MAX\n");
+        header.makeLineSeparator();
+        header.write("#ifdef UINT64_MAX\n");
     }
 
     for(int i = 0; i < (int)typeNames.size(); i++)
@@ -216,34 +216,34 @@ void bytesToLeBytes(const uint8_t* data, uint8_t* bytes, int* index, int num);)"
         if(support.int64 && (i > 0))
         {
             if((typeSizes.at(i) == 4) && (typeSizes.at(i-1) == 5))
-                header->write("\n#endif // UINT64_MAX\n");
+                header.write("\n#endif // UINT64_MAX\n");
         }
 
         if(typeSizes[i] != 1)
         {
             // big endian
-            header->makeLineSeparator();
-            header->write("//! " + briefEncodeComment(i, true) + "\n");
-            header->write(encodeSignature(i, true) + ";\n");
+            header.makeLineSeparator();
+            header.write("//! " + briefEncodeComment(i, true) + "\n");
+            header.write(encodeSignature(i, true) + ";\n");
             
             // little endian
-            header->makeLineSeparator();
-            header->write("//! " + briefEncodeComment(i, false) + "\n");
-            header->write(encodeSignature(i, false) + ";\n");
+            header.makeLineSeparator();
+            header.write("//! " + briefEncodeComment(i, false) + "\n");
+            header.write(encodeSignature(i, false) + ";\n");
         }
         else
         {
-            header->makeLineSeparator();
-            header->write("//! " + briefEncodeComment(i, true) + "\n");
-            header->write(encodeSignature(i, true) + "\n");
+            header.makeLineSeparator();
+            header.write("//! " + briefEncodeComment(i, true) + "\n");
+            header.write(encodeSignature(i, true) + "\n");
         }
 
 
     }// for all output byte counts
 
-    header->makeLineSeparator();
+    header.makeLineSeparator();
 
-    return header->flush();
+    return header.flush();
 
 }// CandCppCoding::generateEncodeHeader
 
@@ -253,16 +253,16 @@ void bytesToLeBytes(const uint8_t* data, uint8_t* bytes, int* index, int num);)"
  *  \param pointer to the protocol source file where the output is written
  * \return true if the file is generated.
  */
-bool CandCppCoding::generateEncodeSource(ProtocolSourceFile *source)
+bool CandCppCoding::generateEncodeSource(ProtocolSourceFile &source)
 {
-    source->setModuleNameAndPath("fieldencode", support.outputpath, support.language);
+    source.setModuleNameAndPath("fieldencode", support.outputpath, support.language);
 
     if(support.specialFloat)
-        source->writeIncludeDirective("floatspecial");
+        source.writeIncludeDirective("floatspecial");
 
-    source->makeLineSeparator();
+    source.makeLineSeparator();
 
-source->write(R"(/*!
+source.write(R"(/*!
  * Copy a null terminated string to a destination whose maximum length (with
  * null terminator) is `maxLength`. The destination string is guaranteed to
  * have a null terminator when this operation is complete. This is a
@@ -376,12 +376,12 @@ void bytesToLeBytes(const uint8_t* data, uint8_t* bytes, int* index, int num)
 
 }// bytesToLeBytes)");
 
-    source->makeLineSeparator();
+    source.makeLineSeparator();
 
     if(support.int64)
     {
-        source->makeLineSeparator();
-        source->write("#ifdef UINT64_MAX\n");
+        source.makeLineSeparator();
+        source.write("#ifdef UINT64_MAX\n");
     }
 
     for(int i = 0; i < (int)typeNames.size(); i++)
@@ -389,27 +389,27 @@ void bytesToLeBytes(const uint8_t* data, uint8_t* bytes, int* index, int num)
         if(support.int64 && (i > 0))
         {
             if((typeSizes.at(i) == 4) && (typeSizes.at(i-1) == 5))
-                source->write("#endif // UINT64_MAX\n");
+                source.write("#endif // UINT64_MAX\n");
         }
 
         if(typeSizes[i] != 1)
         {
             // big endian
-            source->makeLineSeparator();
-            source->write(fullEncodeComment(i, true) + "\n");
-            source->write(fullEncodeFunction(i, true) + "\n");
+            source.makeLineSeparator();
+            source.write(fullEncodeComment(i, true) + "\n");
+            source.write(fullEncodeFunction(i, true) + "\n");
             
             // little endian
-            source->makeLineSeparator();
-            source->write(fullEncodeComment(i, false) + "\n");
-            source->write(fullEncodeFunction(i, false) + "\n");
+            source.makeLineSeparator();
+            source.write(fullEncodeComment(i, false) + "\n");
+            source.write(fullEncodeFunction(i, false) + "\n");
         }
 
     }
 
-    source->makeLineSeparator();
+    source.makeLineSeparator();
 
-    return source->flush();
+    return source.flush();
 
 }// CandCppCoding::generateEncodeSource
 
@@ -419,12 +419,12 @@ void bytesToLeBytes(const uint8_t* data, uint8_t* bytes, int* index, int num)
  * \param pointer to the protocol header file where the output is written
  * \return true if the file is generated.
  */
-bool CandCppCoding::generateDecodeHeader(ProtocolHeaderFile *header)
+bool CandCppCoding::generateDecodeHeader(ProtocolHeaderFile &header)
 {
-    header->setModuleNameAndPath("fielddecode", support.outputpath, support.language);
+    header.setModuleNameAndPath("fielddecode", support.outputpath, support.language);
 
 // Top level comment
-header->setFileComment(R"(fielddecode provides routines to pull numbers from a byte stream.
+header.setFileComment(R"(fielddecode provides routines to pull numbers from a byte stream.
 
 fielddecode provides routines to pull numbers in local memory layout from
 a big or little endian byte stream. It is the opposite operation from the
@@ -457,16 +457,16 @@ in our case we can decode signed 24-bit numbers (for example) which are
 returned to the caller as int32_t. In this instance fielddecode performs the
 sign extension.)");
 
-    header->write("\n");
-    header->write("#define __STDC_CONSTANT_MACROS\n");
-    header->write("#include <stdint.h>\n");
+    header.write("\n");
+    header.write("#define __STDC_CONSTANT_MACROS\n");
+    header.write("#include <stdint.h>\n");
 
     if(support.supportbool)
-        header->writeIncludeDirective("stdbool.h", "", true);
+        header.writeIncludeDirective("stdbool.h", "", true);
 
-    header->makeLineSeparator();
+    header.makeLineSeparator();
 
-header->write(R"(//! Decode a null terminated string from a byte stream
+header.write(R"(//! Decode a null terminated string from a byte stream
 void stringFromBytes(char* string, const uint8_t* bytes, int* index, int maxLength, int fixedLength);
 
 //! Copy an array of bytes from a byte stream without changing the order.
@@ -478,8 +478,8 @@ void bytesFromLeBytes(uint8_t* data, const uint8_t* bytes, int* index, int num);
 
     if(support.int64)
     {
-        header->makeLineSeparator();
-        header->write("#ifdef UINT64_MAX\n");
+        header.makeLineSeparator();
+        header.write("#ifdef UINT64_MAX\n");
     }
 
     for(int type = 0; type < (int)typeNames.size(); type++)
@@ -487,32 +487,32 @@ void bytesFromLeBytes(uint8_t* data, const uint8_t* bytes, int* index, int num);
         if(support.int64 && (type > 0))
         {
             if((typeSizes.at(type) == 4) && (typeSizes.at(type-1) == 5))
-                header->write("\n#endif // UINT64_MAX\n");
+                header.write("\n#endif // UINT64_MAX\n");
         }
 
         if(typeSizes[type] != 1)
         {
-            header->makeLineSeparator();
-            header->write("//! " + briefDecodeComment(type, true) + "\n");
-            header->write(decodeSignature(type, true) + ";\n");
+            header.makeLineSeparator();
+            header.write("//! " + briefDecodeComment(type, true) + "\n");
+            header.write(decodeSignature(type, true) + ";\n");
 
-            header->makeLineSeparator();
-            header->write("//! " + briefDecodeComment(type, false) + "\n");
-            header->write(decodeSignature(type, false) + ";\n");
+            header.makeLineSeparator();
+            header.write("//! " + briefDecodeComment(type, false) + "\n");
+            header.write(decodeSignature(type, false) + ";\n");
         }
         else
         {
-            header->makeLineSeparator();
-            header->write("//! " + briefDecodeComment(type, true) + "\n");
-            header->write(decodeSignature(type, true) + "\n");
+            header.makeLineSeparator();
+            header.write("//! " + briefDecodeComment(type, true) + "\n");
+            header.write(decodeSignature(type, true) + "\n");
         }
 
 
     }// for all input types
 
-    header->makeLineSeparator();
+    header.makeLineSeparator();
 
-    return header->flush();
+    return header.flush();
 
 }// CandCppCoding::generateDecodeHeader
 
@@ -522,17 +522,17 @@ void bytesFromLeBytes(uint8_t* data, const uint8_t* bytes, int* index, int num);
  * \param pointer to the protocol source file where the output is written
  * \return true if the file is generated.
  */
-bool CandCppCoding::generateDecodeSource(ProtocolSourceFile *source)
+bool CandCppCoding::generateDecodeSource(ProtocolSourceFile &source)
 {
-    source->setModuleNameAndPath("fielddecode", support.outputpath, support.language);
+    source.setModuleNameAndPath("fielddecode", support.outputpath, support.language);
 
     if(support.specialFloat)
-        source->writeIncludeDirective("floatspecial");
+        source.writeIncludeDirective("floatspecial");
 
-    source->makeLineSeparator();
+    source.makeLineSeparator();
 
 // Raw string magic
-source->write(R"(/*!
+source.write(R"(/*!
  * Decode a null terminated string from a byte stream
  * \param string receives the deocded null-terminated string.
  * \param bytes is a pointer to the byte stream to be decoded.
@@ -626,8 +626,8 @@ void bytesFromLeBytes(uint8_t* data, const uint8_t* bytes, int* index, int num)
 
     if(support.int64)
     {
-        source->makeLineSeparator();
-        source->write("#ifdef UINT64_MAX\n");
+        source.makeLineSeparator();
+        source.write("#ifdef UINT64_MAX\n");
     }
 
     for(int type = 0; type < (int)typeNames.size(); type++)
@@ -635,27 +635,27 @@ void bytesFromLeBytes(uint8_t* data, const uint8_t* bytes, int* index, int num)
         if(support.int64 && (type > 0))
         {
             if((typeSizes.at(type) == 4) && (typeSizes.at(type-1) == 5))
-                source->write("#endif // UINT64_MAX\n");
+                source.write("#endif // UINT64_MAX\n");
         }
 
         if(typeSizes[type] != 1)
         {
             // big endian unsigned
-            source->makeLineSeparator();
-            source->write(fullDecodeComment(type, true) + "\n");
-            source->write(fullDecodeFunction(type, true) + "\n");
+            source.makeLineSeparator();
+            source.write(fullDecodeComment(type, true) + "\n");
+            source.write(fullDecodeFunction(type, true) + "\n");
 
             // little endian unsigned
-            source->makeLineSeparator();
-            source->write(fullDecodeComment(type, false) + "\n");
-            source->write(fullDecodeFunction(type, false) + "\n");
+            source.makeLineSeparator();
+            source.write(fullDecodeComment(type, false) + "\n");
+            source.write(fullDecodeFunction(type, false) + "\n");
         }
 
     }// for all input types
 
-    source->makeLineSeparator();
+    source.makeLineSeparator();
 
-    return source->flush();
+    return source.flush();
 
 }// CandCppCoding::generateDecodeSource
 
@@ -1194,21 +1194,21 @@ PythonCoding::PythonCoding(const ProtocolSupport &sup, const std::vector<std::st
  *  \param pointer to the protocol source file where the output is written
  * \return true if the file is generated.
  */
-bool PythonCoding::generateEncodeSource(ProtocolSourceFile *source)
+bool PythonCoding::generateEncodeSource(ProtocolSourceFile &source)
 {
-    source->setModuleNameAndPath("fieldencode", support.outputpath, support.language);
+    source.setModuleNameAndPath("fieldencode", support.outputpath, support.language);
 
-    source->writeIncludeDirective("struct");
-    source->writeIncludeDirective("sys", "regular");
+    source.writeIncludeDirective("struct");
+    source.writeIncludeDirective("sys", "regular");
 
     if(support.specialFloat)
-        source->writeIncludeDirective("floatspecial");
+        source.writeIncludeDirective("floatspecial");
 
 
     if(support.int64)
     {
-        source->makeLineSeparator();
-        source->write("# supporting 64 bit sizes\n\n"); // TODO: deal with max 64 case properly
+        source.makeLineSeparator();
+        source.write("# supporting 64 bit sizes\n\n"); // TODO: deal with max 64 case properly
     }
 
     for(int i = 0; i < (int)typeNames.size(); i++)
@@ -1216,22 +1216,22 @@ bool PythonCoding::generateEncodeSource(ProtocolSourceFile *source)
         if(support.int64 && (i > 0))
         {
             if((typeSizes.at(i) == 4) && (typeSizes.at(i-1) == 5))
-               source->write("# end supporting 64 bit sizes\n");
+               source.write("# end supporting 64 bit sizes\n");
         }
 
         if(typeSizes[i] != 1)
         {
             // big endian
-            source->makeLineSeparator();
-            source->write(fullPyEncodeFunction(i, true) + "\n");
+            source.makeLineSeparator();
+            source.write(fullPyEncodeFunction(i, true) + "\n");
 
             // little endian
-            source->makeLineSeparator();
-            source->write(fullPyEncodeFunction(i, false) + "\n");
+            source.makeLineSeparator();
+            source.write(fullPyEncodeFunction(i, false) + "\n");
         }
     }
 
-    return source->flush();
+    return source.flush();
 
 
 } // PythonCoding::generateEncodeSource
@@ -1242,7 +1242,7 @@ bool PythonCoding::generateEncodeSource(ProtocolSourceFile *source)
  *  \param pointer to the protocol header file where the output is written
  * \return true if the file is generated.
  */
-bool PythonCoding::generateEncodeHeader(ProtocolHeaderFile *header)
+bool PythonCoding::generateEncodeHeader(ProtocolHeaderFile &header)
 {
     (void) header;
     return true;
@@ -1254,22 +1254,22 @@ bool PythonCoding::generateEncodeHeader(ProtocolHeaderFile *header)
  *  \param pointer to the protocol source file where the output is written
  * \return true if the file is generated.
  */
-bool PythonCoding::generateDecodeSource(ProtocolSourceFile *source)
+bool PythonCoding::generateDecodeSource(ProtocolSourceFile &source)
 {
-    source->setModuleNameAndPath("fielddecode", support.outputpath, support.language);
+    source.setModuleNameAndPath("fielddecode", support.outputpath, support.language);
 
-    source->writeIncludeDirective("struct");
+    source.writeIncludeDirective("struct");
 
     if(support.specialFloat)
-        source->writeIncludeDirective("floatspecial");
+        source.writeIncludeDirective("floatspecial");
 
 
     if(support.int64)
     {
-        source->makeLineSeparator();
+        source.makeLineSeparator();
 
         /// TODO: deal with max 64 case properly
-        source->write("# supporting 64 bit sizes\n\n");
+        source.write("# supporting 64 bit sizes\n\n");
     }
 
     for(int i = 0; i < (int)typeNames.size(); i++)
@@ -1277,23 +1277,23 @@ bool PythonCoding::generateDecodeSource(ProtocolSourceFile *source)
         if(support.int64 && (i > 0))
         {
             if((typeSizes.at(i) == 4) && (typeSizes.at(i-1) == 5))
-               source->write("# end supporting 64 bit sizes\n");
+               source.write("# end supporting 64 bit sizes\n");
         }
 
         if(typeSizes[i] != 1)
         {
             // big endian
-            source->makeLineSeparator();
-            source->write(fullPyDecodeFunction(i, true) + "\n");
+            source.makeLineSeparator();
+            source.write(fullPyDecodeFunction(i, true) + "\n");
 
             // little endian
-            source->makeLineSeparator();
-            source->write(fullPyDecodeFunction(i, false) + "\n");
+            source.makeLineSeparator();
+            source.write(fullPyDecodeFunction(i, false) + "\n");
         }
 
     }
 
-    return source->flush();
+    return source.flush();
 
 } // PythonCoding::generateDecodeSource
 
@@ -1303,7 +1303,7 @@ bool PythonCoding::generateDecodeSource(ProtocolSourceFile *source)
  *  \param pointer to the protocol source file where the output is written
  * \return true if the file is generated.
  */
-bool PythonCoding::generateDecodeHeader(ProtocolHeaderFile *header)
+bool PythonCoding::generateDecodeHeader(ProtocolHeaderFile &header)
 {
     (void) header;
     return true;
@@ -1675,30 +1675,30 @@ std::string PythonCoding::pyEncodeFunction(std::string signature, std::string co
 
     std::string tab = "    ";
     std::string bytes = std::to_string(typeSizes[type]);
-    std::string encode_args = "byteA, index, number";
+    std::string function_args = "byteA: bytearray, index: int, number: ";
+    std::string pack_args = "byteA, index, number";
 
-    std::string function = "def " + signature + "(" + encode_args;
 
+    std::string function = "def " + signature + "(" + function_args;
 
     if (contains(typeSigNames[type], "float"))
     {
         if (contains(typeSigNames[type], "float16") or contains(typeSigNames[type], "float24"))
         {
-            function += ", sigbits):\n" + comment;
+            function += "float, sigbits: int) -> int:\n" + comment;
             function = pyEncodeSpecialFloat(function, type, bigendian);
             return function;
         }
         else
         {
-            function += "):\n";
+            function += "float) -> int:\n";
             function += comment;
-            /// TODO: normal float check to verify its valid?
         }
     }
     else
     {
-        function += "):\n";
-        function += comment;
+
+        function += "int) -> int:\n" + comment;
         function += tab + "if number > " + max + ":\n" + tab + tab + "number = " + max + "\n";
         function += tab + "if number < " + min + ":\n" + tab + tab + "number = " + min + "\n\n";
     }
@@ -1709,7 +1709,7 @@ std::string PythonCoding::pyEncodeFunction(std::string signature, std::string co
         return function;
     }
 
-    function += tab + "pack_into(" + format + ", "  + encode_args + ")\n";
+    function += tab + "pack_into(" + format + ", "  + pack_args + ")\n";
     function += tab + "index += " + bytes + "\n" + tab + "return index\n\n";
 
     return function;
@@ -1780,9 +1780,17 @@ std::string PythonCoding::pyEncodeSpecialFloat(std::string function, int type, b
         endian = "Le";
 
     if(typeSizes[type] == 3)
-        return function += "    uint24To" + endian + "Bytes(byteA, index, float32ToFloat24(number, sigbits))\n";
+    {
+        function += "    index = uint24To" + endian + "Bytes(byteA, index, float32ToFloat24(number, sigbits))\n";
+        function += "    return index\n\n";
+        return function;
+    }
     else
-        return function += "    uint16To" + endian + "Bytes(byteA, index, float32ToFloat16(number, sigbits))\n";
+    {
+        function += "    index = uint16To" + endian + "Bytes(byteA, index, float32ToFloat16(number, sigbits))\n";
+        function += "    return index\n\n";
+        return function;
+    }
 
 } // PythonCoding::pyEncodeSpecialFloat
 
@@ -1818,20 +1826,25 @@ std::string PythonCoding::fullPyDecodeFunction(int type, bool bigendian)
  */
 std::string PythonCoding::pyDecodeFunction(std::string signature, std::string comment, std::string format, int type, bool bigendian)
 {
-    std::string function_args = "byteA, index";
-    std::string unpack_args = format + ", byteA, offset=index[0]";
+    std::string function_args = "byteA: bytearray, index: int";
+    std::string unpack_args   = format + ", byteA, offset=index[0]";
 
     std::string function = "def " + signature + "(" + function_args;
 
-    if (contains(typeSigNames[type], "float16") or contains(typeSigNames[type], "float24"))
+    if (contains(typeSigNames[type], "float"))
     {
-        function += ", sigbits):\n" + comment;
-        function = pyDecodeSpecialFloat(function, type, bigendian);
-        return function;
-    }
 
-    function += "):\n";
-    function += comment;
+        if (contains(typeSigNames[type], "float16") or contains(typeSigNames[type], "float24"))
+        {
+            function += ", sigbits: int) -> float:\n" + comment;
+            function = pyDecodeSpecialFloat(function, type, bigendian);
+            return function;
+        }
+        else
+            function += ") -> float:\n" + comment;
+    }
+    else
+        function += ") -> int:\n" + comment;
 
     if (specialSize)
     {

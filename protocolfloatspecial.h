@@ -22,8 +22,6 @@ protected:
     ProtocolSupport support;
 };
 
-#endif // PROTOCOLFLOATSPECIAL_H
-
 
 class FloatSpecialInterface
 {
@@ -35,10 +33,10 @@ public:
     virtual ~FloatSpecialInterface() {;}
 
     //! Generate the encode header file
-    virtual bool generateHeader(ProtocolHeaderFile *header) = 0;
+    virtual bool generateHeader(ProtocolHeaderFile &header) = 0;
 
     //! Generate the encode source file
-    virtual bool generateSource(ProtocolSourceFile *source) = 0;
+    virtual bool generateSource(ProtocolSourceFile &source) = 0;
 
 
 protected:
@@ -57,10 +55,10 @@ public:
     PythonFloatSpecial(const ProtocolSupport &sup) : FloatSpecialInterface(sup) {;}
 
     //! Generate the encode header file
-    bool generateHeader(ProtocolHeaderFile *header);
+    bool generateHeader(ProtocolHeaderFile &header);
 
     //! Generate the encode source file
-    bool generateSource(ProtocolSourceFile *source);
+    bool generateSource(ProtocolSourceFile &source);
 
 
 };
@@ -73,10 +71,11 @@ public:
     CandCppFloatSpecial(const ProtocolSupport &sup) : FloatSpecialInterface(sup) {;}
 
     //! Generate the encode header file
-    bool generateHeader(ProtocolHeaderFile *header);
+    bool generateHeader(ProtocolHeaderFile &header);
 
     //! Generate the encode source file
-    bool generateSource(ProtocolSourceFile *source);
+    bool generateSource(ProtocolSourceFile &source);
 
 };
 
+#endif // PROTOCOLFLOATSPECIAL_H

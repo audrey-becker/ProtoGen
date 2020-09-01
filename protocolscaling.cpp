@@ -3,9 +3,13 @@
 
 /// TODO: make scalers positive
 
+//! ScalingInterface Constructor
+ScalingInterface::ScalingInterface(const ProtocolSupport &sup) : support(sup)
+{
+} // ScalingInterface:: ScalingInterface
 
 //! Determine if type is signed
-bool ProtocolScaling::isTypeSigned(inmemorytypes_t type) const
+bool ScalingInterface::isTypeSigned(inmemorytypes_t type) const
 {
     switch(type)
     {
@@ -21,7 +25,7 @@ bool ProtocolScaling::isTypeSigned(inmemorytypes_t type) const
 }
 
 //! Determine if type is signed
-bool ProtocolScaling::isTypeSigned(encodedtypes_t type) const
+bool ScalingInterface::isTypeSigned(encodedtypes_t type) const
 {
     switch(type)
     {
@@ -43,7 +47,7 @@ bool ProtocolScaling::isTypeSigned(encodedtypes_t type) const
 }
 
 //! Determine if type is floating point
-bool ProtocolScaling::isTypeFloating(inmemorytypes_t type) const
+bool ScalingInterface::isTypeFloating(inmemorytypes_t type) const
 {
     switch(type)
     {
@@ -57,21 +61,21 @@ bool ProtocolScaling::isTypeFloating(inmemorytypes_t type) const
 }
 
 //! Determine if type is floating point
-bool ProtocolScaling::isTypeFloating(encodedtypes_t type) const
+bool ScalingInterface::isTypeFloating(encodedtypes_t type) const
 {
     (void)type;
     return false;
 }
 
 //! Determine if type is bitfield
-bool ProtocolScaling::isTypeBitfield(inmemorytypes_t type) const
+bool ScalingInterface::isTypeBitfield(inmemorytypes_t type) const
 {
     (void)type;
     return false;
 }
 
 //! Determine if type is bitfield
-bool ProtocolScaling::isTypeBitfield(encodedtypes_t type) const
+bool ScalingInterface::isTypeBitfield(encodedtypes_t type) const
 {
     switch(type)
     {
@@ -85,7 +89,7 @@ bool ProtocolScaling::isTypeBitfield(encodedtypes_t type) const
 }
 
 //! Convert type to signed equivalent
-ProtocolScaling::inmemorytypes_t ProtocolScaling::convertTypeToSigned(inmemorytypes_t type) const
+ScalingInterface::inmemorytypes_t ScalingInterface::convertTypeToSigned(inmemorytypes_t type) const
 {
     switch(type)
     {
@@ -98,7 +102,7 @@ ProtocolScaling::inmemorytypes_t ProtocolScaling::convertTypeToSigned(inmemoryty
 }
 
 //! Convert type to signed equivalent
-ProtocolScaling::encodedtypes_t ProtocolScaling::convertTypeToSigned(encodedtypes_t type) const
+ScalingInterface::encodedtypes_t ScalingInterface::convertTypeToSigned(encodedtypes_t type) const
 {
     switch(type)
     {
@@ -117,7 +121,7 @@ ProtocolScaling::encodedtypes_t ProtocolScaling::convertTypeToSigned(encodedtype
 }
 
 //! Convert type to unsigned equivalent
-ProtocolScaling::inmemorytypes_t ProtocolScaling::convertTypeToUnsigned(inmemorytypes_t type) const
+ScalingInterface::inmemorytypes_t ScalingInterface::convertTypeToUnsigned(inmemorytypes_t type) const
 {
     switch(type)
     {
@@ -130,7 +134,7 @@ ProtocolScaling::inmemorytypes_t ProtocolScaling::convertTypeToUnsigned(inmemory
 }
 
 //! Convert type to unsigned equivalent
-ProtocolScaling::encodedtypes_t ProtocolScaling::convertTypeToUnsigned(encodedtypes_t type) const
+ScalingInterface::encodedtypes_t ScalingInterface::convertTypeToUnsigned(encodedtypes_t type) const
 {
     switch(type)
     {
@@ -147,7 +151,7 @@ ProtocolScaling::encodedtypes_t ProtocolScaling::convertTypeToUnsigned(encodedty
 }
 
 //! Determine the encoded length of type
-int ProtocolScaling::typeLength(inmemorytypes_t type) const
+int ScalingInterface::typeLength(inmemorytypes_t type) const
 {
     switch(type)
     {
@@ -173,7 +177,7 @@ int ProtocolScaling::typeLength(inmemorytypes_t type) const
 }
 
 //! Determine the encoded length of type
-int ProtocolScaling::typeLength(encodedtypes_t type) const
+int ScalingInterface::typeLength(encodedtypes_t type) const
 {
     switch(type)
     {
@@ -222,7 +226,7 @@ int ProtocolScaling::typeLength(encodedtypes_t type) const
  * \param length is the type length in bytes.
  * \return The in-memory type enumeration
  */
-ProtocolScaling::inmemorytypes_t ProtocolScaling::createInMemoryType(bool issigned, bool isfloat, int length) const
+ScalingInterface::inmemorytypes_t ScalingInterface::createInMemoryType(bool issigned, bool isfloat, int length) const
 {
     if(isfloat)
     {
@@ -263,7 +267,7 @@ ProtocolScaling::inmemorytypes_t ProtocolScaling::createInMemoryType(bool issign
  * \param length is the type length in bytes.
  * \return The encoded type enumeration
  */
-ProtocolScaling::encodedtypes_t ProtocolScaling::createEncodedType(bool issigned, int length) const
+ScalingInterface::encodedtypes_t ScalingInterface::createEncodedType(bool issigned, int length) const
 {
     if(issigned)
     {
@@ -308,7 +312,7 @@ ProtocolScaling::encodedtypes_t ProtocolScaling::createEncodedType(bool issigned
 
 
 //! Return the name in code of this type
-std::string ProtocolScaling::typeName(inmemorytypes_t type) const
+std::string ScalingInterface::typeName(inmemorytypes_t type) const
 {
     switch(type)
     {
@@ -327,7 +331,7 @@ std::string ProtocolScaling::typeName(inmemorytypes_t type) const
 }
 
 //! Return the name in code of this type
-std::string ProtocolScaling::typeName(encodedtypes_t type) const
+std::string ScalingInterface::typeName(encodedtypes_t type) const
 {
     switch(type)
     {
@@ -366,7 +370,7 @@ std::string ProtocolScaling::typeName(encodedtypes_t type) const
 }
 
 //! Return the name in function signature of this type
-std::string ProtocolScaling::typeSigName(inmemorytypes_t type) const
+std::string ScalingInterface::typeSigName(inmemorytypes_t type) const
 {
     switch(type)
     {
@@ -386,7 +390,7 @@ std::string ProtocolScaling::typeSigName(inmemorytypes_t type) const
 
 
 //! Return the name in function signature of this type
-std::string ProtocolScaling::typeSigName(encodedtypes_t type) const
+std::string ScalingInterface::typeSigName(encodedtypes_t type) const
 {
     switch(type)
     {
@@ -413,7 +417,7 @@ std::string ProtocolScaling::typeSigName(encodedtypes_t type) const
 }
 
 //! Determine if type is supported by this protocol
-bool ProtocolScaling::isTypeSupported(inmemorytypes_t type) const
+bool ScalingInterface::isTypeSupported(inmemorytypes_t type) const
 {
     switch(type)
     {
@@ -430,7 +434,7 @@ bool ProtocolScaling::isTypeSupported(inmemorytypes_t type) const
 }
 
 //! Determine if type is supported by this protocol
-bool ProtocolScaling::isTypeSupported(encodedtypes_t type) const
+bool ScalingInterface::isTypeSupported(encodedtypes_t type) const
 {
     switch(type)
     {
@@ -457,7 +461,7 @@ bool ProtocolScaling::isTypeSupported(encodedtypes_t type) const
 
 
 //! Determine if both types are supported by this protocol
-bool ProtocolScaling::areTypesSupported(inmemorytypes_t inmemory, encodedtypes_t encoded) const
+bool ScalingInterface::areTypesSupported(inmemorytypes_t inmemory, encodedtypes_t encoded) const
 {
     return isTypeSupported(inmemory) && isTypeSupported(encoded);
 }
@@ -488,47 +492,69 @@ ProtocolScaling::ProtocolScaling(ProtocolSupport sup) :
  */
 bool ProtocolScaling::generate(std::vector<std::string>& fileNameList, std::vector<std::string>& filePathList)
 {
-    if(generateEncodeHeader())
+
+   // Determine the output language
+   ScalingInterface* generator = nullptr;
+
+   if ( support.language == support.python_language)
+       generator = new PythonScaledCoding(support);
+   else
+       generator = new CandCppScaledCoding(support);
+
+
+    if(generator->generateEncodeHeader(header))
     {
         fileNameList.push_back(header.fileName());
         filePathList.push_back(header.filePath());
     }
     else
+    {
+        delete generator;
         return false;
+    }
 
-    if(generateEncodeSource())
+    if(generator->generateEncodeSource(source))
     {
         fileNameList.push_back(source.fileName());
         filePathList.push_back(source.filePath());
     }
     else
+    {
+        delete generator;
         return false;
+    }
 
-    if(generateDecodeHeader())
+    if(generator->generateDecodeHeader(header))
     {
         fileNameList.push_back(header.fileName());
         filePathList.push_back(header.filePath());
     }
     else
+    {
+        delete generator;
         return false;
-
-    if(generateDecodeSource())
+    }
+    if(generator->generateDecodeSource(source))
     {
         fileNameList.push_back(source.fileName());
         filePathList.push_back(source.filePath());
     }
     else
+    {
+        delete generator;
         return false;
+    }
 
+
+    delete generator;
     return true;
 }
-
 
 /*!
  * Generate the header file for protocols caling
  * \return true if the file is generated.
  */
-bool ProtocolScaling::generateEncodeHeader(void)
+bool CandCppScaledCoding::generateEncodeHeader(ProtocolHeaderFile &header)
 {
     header.setModuleNameAndPath("scaledencode", support.outputpath, support.language);
 
@@ -662,7 +688,7 @@ bool ProtocolScaling::generateEncodeHeader(void)
  * Generate the source file for protocols caling
  * \return true if the file is generated.
  */
-bool ProtocolScaling::generateEncodeSource(void)
+bool CandCppScaledCoding::generateEncodeSource(ProtocolSourceFile &source)
 {
     source.setModuleNameAndPath("scaledencode", support.outputpath, support.language);
 
@@ -734,7 +760,7 @@ bool ProtocolScaling::generateEncodeSource(void)
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return The string that represents the one line function comment.
  */
-std::string ProtocolScaling::briefEncodeComment(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::briefEncodeComment(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     std::string scalingtype;
 
@@ -788,7 +814,7 @@ std::string ProtocolScaling::briefEncodeComment(inmemorytypes_t inmemory, encode
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return The string that represents the full multi-line function comment.
  */
-std::string ProtocolScaling::fullEncodeComment(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::fullEncodeComment(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     std::string comment= ("/*!\n");
 
@@ -832,7 +858,7 @@ std::string ProtocolScaling::fullEncodeComment(inmemorytypes_t inmemory, encoded
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return The string that represents the function signature, without a trailing semicolon
  */
-std::string ProtocolScaling::encodeSignature(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::encodeSignature(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     if(isTypeBitfield(encoded))
     {
@@ -876,7 +902,7 @@ std::string ProtocolScaling::encodeSignature(inmemorytypes_t inmemory, encodedty
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return the function as a string
  */
-std::string ProtocolScaling::fullEncodeFunction(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::fullEncodeFunction(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     if(isTypeBitfield(encoded))
         return fullBitfieldEncodeFunction(inmemory, encoded, bigendian);
@@ -894,7 +920,7 @@ std::string ProtocolScaling::fullEncodeFunction(inmemorytypes_t inmemory, encode
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return the function as a string
  */
-std::string ProtocolScaling::fullBitfieldEncodeFunction(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::fullBitfieldEncodeFunction(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     std::string constantone;
 
@@ -970,7 +996,7 @@ std::string ProtocolScaling::fullBitfieldEncodeFunction(inmemorytypes_t inmemory
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return the function as a string
  */
-std::string ProtocolScaling::fullFloatEncodeFunction(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::fullFloatEncodeFunction(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     std::string function = encodeSignature(inmemory, encoded, bigendian) + "\n";
 
@@ -1090,7 +1116,7 @@ std::string ProtocolScaling::fullFloatEncodeFunction(inmemorytypes_t inmemory, e
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return the function as a string
  */
-std::string ProtocolScaling::fullIntegerEncodeFunction(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::fullIntegerEncodeFunction(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     std::string function = encodeSignature(inmemory, encoded, bigendian) + "\n";
 
@@ -1228,7 +1254,7 @@ std::string ProtocolScaling::fullIntegerEncodeFunction(inmemorytypes_t inmemory,
  * Generate the header file for protocols caling
  * \return true if the file is generated.
  */
-bool ProtocolScaling::generateDecodeHeader(void)
+bool CandCppScaledCoding::generateDecodeHeader(ProtocolHeaderFile &header)
 {
     header.setModuleNameAndPath("scaleddecode", support.outputpath, support.language);
 
@@ -1330,7 +1356,7 @@ bool ProtocolScaling::generateDecodeHeader(void)
  * Generate the source file for protocols caling
  * \return true if the file is generated.
  */
-bool ProtocolScaling::generateDecodeSource(void)
+bool CandCppScaledCoding::generateDecodeSource(ProtocolSourceFile &source)
 {
     source.setModuleNameAndPath("scaleddecode", support.outputpath, support.language);
 
@@ -1402,7 +1428,7 @@ bool ProtocolScaling::generateDecodeSource(void)
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return The string that represents the one line function comment.
  */
-std::string ProtocolScaling::briefDecodeComment(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::briefDecodeComment(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     std::string scalingtype;
 
@@ -1456,7 +1482,7 @@ std::string ProtocolScaling::briefDecodeComment(inmemorytypes_t inmemory, encode
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return The string that represents the full multi-line function comment.
  */
-std::string ProtocolScaling::fullDecodeComment(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::fullDecodeComment(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     std::string comment= ("/*!\n");
 
@@ -1531,7 +1557,7 @@ std::string ProtocolScaling::fullDecodeComment(inmemorytypes_t inmemory, encoded
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return The string that represents the function signature, without a trailing semicolon
  */
-std::string ProtocolScaling::decodeSignature(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::decodeSignature(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     if(isTypeBitfield(encoded))
     {
@@ -1585,7 +1611,7 @@ std::string ProtocolScaling::decodeSignature(inmemorytypes_t inmemory, encodedty
  * \param bigendian should be true if the function outputs big endian byte order.
  * \return the function as a string
  */
-std::string ProtocolScaling::fullDecodeFunction(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
+std::string CandCppScaledCoding::fullDecodeFunction(inmemorytypes_t inmemory, encodedtypes_t encoded, bool bigendian) const
 {
     std::string function = decodeSignature(inmemory, encoded, bigendian) + "\n";
     function += "{\n";
@@ -1631,3 +1657,46 @@ std::string ProtocolScaling::fullDecodeFunction(inmemorytypes_t inmemory, encode
     return function;
 
 }// ProtocolScaling::fullDecodeFunction
+
+
+
+
+//! Generate the encode header file
+bool PythonScaledCoding::generateEncodeHeader(ProtocolHeaderFile &header)
+{
+    (void) header;
+    return true;
+
+}
+
+//! Generate the encode source file
+bool PythonScaledCoding::generateEncodeSource(ProtocolSourceFile &source)
+{
+    source.setModuleNameAndPath("scaledencode", support.outputpath, support.language);
+
+    source.writeIncludeDirective("fieldencode");
+    source.write("\n");
+
+    return true;
+
+}
+
+//! Generate the decode header file
+bool PythonScaledCoding::generateDecodeHeader(ProtocolHeaderFile &header)
+{
+    (void) header;
+    return true;
+}
+
+//! Generate the decode source file
+bool PythonScaledCoding::generateDecodeSource(ProtocolSourceFile &source)
+{
+    source.setModuleNameAndPath("scaleddecode", support.outputpath, support.language);
+
+    source.writeIncludeDirective("fieldencode");
+    source.write("\n");
+
+    return true;
+
+}
+

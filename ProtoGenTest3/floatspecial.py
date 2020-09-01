@@ -7,31 +7,31 @@ from ctypes import *
 from struct import *
 from math   import *
 
-def float32ToInt(value):
+def float32ToInt(value: float) -> int:
     """ Converts the bits of a float32 to type int with same bit pattern."""
     byteA = pack("f", value)
     integer = unpack("I", byteA)
     return integer[0]
 
-def float64ToInt(value):
+def float64ToInt(value: double) -> int:
     """ Converts the bits of a float64 to type int with same bit pattern."""
     byteA = pack("d", value)
     integer = unpack("q", byteA)
     return integer[0]
 
-def int32ToFloat(value):
+def int32ToFloat(value: int) -> float:
     """ Converts the bits of a int32 to type float32 with same bit pattern."""
     byteA = pack("I", value)
     Float = unpack("f", byteA)
     return Float[0]
 
-def int64ToFloat(value):
+def int64ToFloat(value: int) -> double:
     """ Converts the bits of a int64 to type float64 with same bit pattern."""
     byteA = pack("q", value)
     Float = unpack("d", byteA)
     return Float[0]
 
-def isFloat32Valid(value):
+def isFloat32Valid(value: float) -> bool:
     """ Check if a 32-bit field is a valid 32-bit IEEE-754 float.
 
         Args:
@@ -63,7 +63,7 @@ def isFloat32Valid(value):
     # If we get here then its a valid float
     return True
 
-def isFloat64Valid(value):
+def isFloat64Valid(value: double) -> bool:
     """ Check if a 64-bit field is a valid 64-bit IEEE-754 float.
 
         Args:
@@ -95,7 +95,7 @@ def isFloat64Valid(value):
     # If we get here then its a valid float
     return True
 
-def float32ToFloat24(value, sigbits):
+def float32ToFloat24(value: float, sigbits: int) -> int:
     """ Convert a 32-bit floating point value (IEEE-754 binary32) to 24-bit floating
         point representation with a variable number of bits for the significand.
 
@@ -154,7 +154,7 @@ def float32ToFloat24(value, sigbits):
     signedExponent = unsignedExponent.value - 127
 
     if signedExponent < -bias:
-        output = 0   # underflow to zero
+        output.value = 0   # underflow to zero
     else:
         if signedExponent > bias:
             # Largest possible exponent and significand without making a NaN or Inf
@@ -174,7 +174,7 @@ def float32ToFloat24(value, sigbits):
     # return the 24-bit representation
     return output.value
 
-def float24ToFloat32(value, sigbits):
+def float24ToFloat32(value: int, sigbits: int) -> float:
     """ Convert a 24-bit floating point representation with variable number of
         significand bits to binary32
 
@@ -216,7 +216,7 @@ def float24ToFloat32(value, sigbits):
 
     return int32ToFloat(Integer)
 
-def float32ToFloat16(value, sigbits):
+def float32ToFloat16(value: float, sigbits: int) -> short:
     """ Convert a 32-bit floating point value (IEEE-754 binary32) to 16-bit floating
         point representation with a variable number of bits for the significand
 
@@ -313,7 +313,7 @@ def float32ToFloat16(value, sigbits):
     # return the binary16 representation
     return output.value
 
-def float16ToFloat32(value, sigbits):
+def float16ToFloat32(value: short, sigbits: int) -> float:
     """ Convert a 16-bit floating point representation with variable number of
         significand bits to binary32
 

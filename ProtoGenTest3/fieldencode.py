@@ -7,7 +7,7 @@ import sys	# regular
 
 # supporting 64 bit sizes
 
-def uint64ToBeBytes(byteA, index, number):
+def uint64ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 8 byte integer on a big endian byte stream.
 
     Args:
@@ -27,7 +27,7 @@ def uint64ToBeBytes(byteA, index, number):
     index += 8
     return index
 
-def uint64ToLeBytes(byteA, index, number):
+def uint64ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 8 byte integer on a little endian byte stream.
 
     Args:
@@ -47,7 +47,7 @@ def uint64ToLeBytes(byteA, index, number):
     index += 8
     return index
 
-def int64ToBeBytes(byteA, index, number):
+def int64ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 8 byte integer on a big endian byte stream.
 
     Args:
@@ -67,7 +67,7 @@ def int64ToBeBytes(byteA, index, number):
     index += 8
     return index
 
-def int64ToLeBytes(byteA, index, number):
+def int64ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 8 byte integer on a little endian byte stream.
 
     Args:
@@ -87,7 +87,7 @@ def int64ToLeBytes(byteA, index, number):
     index += 8
     return index
 
-def uint56ToBeBytes(byteA, index, number):
+def uint56ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 7 byte integer on a big endian byte stream.
 
     Args:
@@ -109,7 +109,7 @@ def uint56ToBeBytes(byteA, index, number):
     index += 7
     return index
 
-def uint56ToLeBytes(byteA, index, number):
+def uint56ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 7 byte integer on a little endian byte stream.
 
     Args:
@@ -131,7 +131,7 @@ def uint56ToLeBytes(byteA, index, number):
     index += 7
     return index
 
-def int56ToBeBytes(byteA, index, number):
+def int56ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 7 byte integer on a big endian byte stream.
 
     Args:
@@ -153,7 +153,7 @@ def int56ToBeBytes(byteA, index, number):
     index += 7
     return index
 
-def int56ToLeBytes(byteA, index, number):
+def int56ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 7 byte integer on a little endian byte stream.
 
     Args:
@@ -175,7 +175,7 @@ def int56ToLeBytes(byteA, index, number):
     index += 7
     return index
 
-def uint48ToBeBytes(byteA, index, number):
+def uint48ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 6 byte integer on a big endian byte stream.
 
     Args:
@@ -197,7 +197,7 @@ def uint48ToBeBytes(byteA, index, number):
     index += 6
     return index
 
-def uint48ToLeBytes(byteA, index, number):
+def uint48ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 6 byte integer on a little endian byte stream.
 
     Args:
@@ -219,7 +219,7 @@ def uint48ToLeBytes(byteA, index, number):
     index += 6
     return index
 
-def int48ToBeBytes(byteA, index, number):
+def int48ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 6 byte integer on a big endian byte stream.
 
     Args:
@@ -241,7 +241,7 @@ def int48ToBeBytes(byteA, index, number):
     index += 6
     return index
 
-def int48ToLeBytes(byteA, index, number):
+def int48ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 6 byte integer on a little endian byte stream.
 
     Args:
@@ -263,7 +263,7 @@ def int48ToLeBytes(byteA, index, number):
     index += 6
     return index
 
-def uint40ToBeBytes(byteA, index, number):
+def uint40ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 5 byte integer on a big endian byte stream.
 
     Args:
@@ -285,7 +285,7 @@ def uint40ToBeBytes(byteA, index, number):
     index += 5
     return index
 
-def uint40ToLeBytes(byteA, index, number):
+def uint40ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 5 byte integer on a little endian byte stream.
 
     Args:
@@ -307,7 +307,7 @@ def uint40ToLeBytes(byteA, index, number):
     index += 5
     return index
 
-def int40ToBeBytes(byteA, index, number):
+def int40ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 5 byte integer on a big endian byte stream.
 
     Args:
@@ -329,7 +329,7 @@ def int40ToBeBytes(byteA, index, number):
     index += 5
     return index
 
-def int40ToLeBytes(byteA, index, number):
+def int40ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 5 byte integer on a little endian byte stream.
 
     Args:
@@ -354,7 +354,7 @@ def int40ToLeBytes(byteA, index, number):
 
 # end supporting 64 bit sizes
 
-def float32ToBeBytes(byteA, index, number):
+def float32ToBeBytes(byteA: bytearray, index: int, number: float) -> int:
     """Encode a 4 byte float on a big endian byte stream.
 
     Args:
@@ -369,7 +369,7 @@ def float32ToBeBytes(byteA, index, number):
     index += 4
     return index
 
-def float32ToLeBytes(byteA, index, number):
+def float32ToLeBytes(byteA: bytearray, index: int, number: float) -> int:
     """Encode a 4 byte float on a little endian byte stream.
 
     Args:
@@ -384,7 +384,7 @@ def float32ToLeBytes(byteA, index, number):
     index += 4
     return index
 
-def uint32ToBeBytes(byteA, index, number):
+def uint32ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 4 byte integer on a big endian byte stream.
 
     Args:
@@ -404,7 +404,7 @@ def uint32ToBeBytes(byteA, index, number):
     index += 4
     return index
 
-def uint32ToLeBytes(byteA, index, number):
+def uint32ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 4 byte integer on a little endian byte stream.
 
     Args:
@@ -424,7 +424,7 @@ def uint32ToLeBytes(byteA, index, number):
     index += 4
     return index
 
-def int32ToBeBytes(byteA, index, number):
+def int32ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 4 byte integer on a big endian byte stream.
 
     Args:
@@ -444,7 +444,7 @@ def int32ToBeBytes(byteA, index, number):
     index += 4
     return index
 
-def int32ToLeBytes(byteA, index, number):
+def int32ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 4 byte integer on a little endian byte stream.
 
     Args:
@@ -464,7 +464,7 @@ def int32ToLeBytes(byteA, index, number):
     index += 4
     return index
 
-def uint24ToBeBytes(byteA, index, number):
+def uint24ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 3 byte integer on a big endian byte stream.
 
     Args:
@@ -486,7 +486,7 @@ def uint24ToBeBytes(byteA, index, number):
     index += 3
     return index
 
-def uint24ToLeBytes(byteA, index, number):
+def uint24ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 3 byte integer on a little endian byte stream.
 
     Args:
@@ -508,7 +508,7 @@ def uint24ToLeBytes(byteA, index, number):
     index += 3
     return index
 
-def int24ToBeBytes(byteA, index, number):
+def int24ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 3 byte integer on a big endian byte stream.
 
     Args:
@@ -530,7 +530,7 @@ def int24ToBeBytes(byteA, index, number):
     index += 3
     return index
 
-def int24ToLeBytes(byteA, index, number):
+def int24ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 3 byte integer on a little endian byte stream.
 
     Args:
@@ -552,7 +552,7 @@ def int24ToLeBytes(byteA, index, number):
     index += 3
     return index
 
-def uint16ToBeBytes(byteA, index, number):
+def uint16ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 2 byte integer on a big endian byte stream.
 
     Args:
@@ -572,7 +572,7 @@ def uint16ToBeBytes(byteA, index, number):
     index += 2
     return index
 
-def uint16ToLeBytes(byteA, index, number):
+def uint16ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a unsigned 2 byte integer on a little endian byte stream.
 
     Args:
@@ -592,7 +592,7 @@ def uint16ToLeBytes(byteA, index, number):
     index += 2
     return index
 
-def int16ToBeBytes(byteA, index, number):
+def int16ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 2 byte integer on a big endian byte stream.
 
     Args:
@@ -612,7 +612,7 @@ def int16ToBeBytes(byteA, index, number):
     index += 2
     return index
 
-def int16ToLeBytes(byteA, index, number):
+def int16ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
     """Encode a signed 2 byte integer on a little endian byte stream.
 
     Args:
@@ -632,7 +632,7 @@ def int16ToLeBytes(byteA, index, number):
     index += 2
     return index
 
-def float64ToBeBytes(byteA, index, number):
+def float64ToBeBytes(byteA: bytearray, index: int, number: float) -> int:
     """Encode a 8 byte float on a big endian byte stream.
 
     Args:
@@ -647,7 +647,7 @@ def float64ToBeBytes(byteA, index, number):
     index += 8
     return index
 
-def float64ToLeBytes(byteA, index, number):
+def float64ToLeBytes(byteA: bytearray, index: int, number: float) -> int:
     """Encode a 8 byte float on a little endian byte stream.
 
     Args:
@@ -662,7 +662,7 @@ def float64ToLeBytes(byteA, index, number):
     index += 8
     return index
 
-def float24ToBeBytes(byteA, index, number, sigbits):
+def float24ToBeBytes(byteA: bytearray, index: int, number: float, sigbits: int) -> int:
     """Encode a signed 3 byte integer on a big endian byte stream.
 
     Args:
@@ -674,9 +674,10 @@ def float24ToBeBytes(byteA, index, number, sigbits):
     Returns:
         index (int): The incremented index increased by 3
     """
-    uint24ToBeBytes(float32ToFloat24(number, sigbits), bytes, index)
+    index = uint24ToBeBytes(byteA, index, float32ToFloat24(number, sigbits))
+    return index
 
-def float24ToLeBytes(byteA, index, number, sigbits):
+def float24ToLeBytes(byteA: bytearray, index: int, number: float, sigbits: int) -> int:
     """Encode a signed 3 byte integer on a little endian byte stream.
 
     Args:
@@ -688,9 +689,10 @@ def float24ToLeBytes(byteA, index, number, sigbits):
     Returns:
         index (int): The incremented index increased by 3
     """
-    uint24ToLeBytes(float32ToFloat24(number, sigbits), bytes, index)
+    index = uint24ToLeBytes(byteA, index, float32ToFloat24(number, sigbits))
+    return index
 
-def float16ToBeBytes(byteA, index, number, sigbits):
+def float16ToBeBytes(byteA: bytearray, index: int, number: float, sigbits: int) -> int:
     """Encode a signed 2 byte integer on a big endian byte stream.
 
     Args:
@@ -702,9 +704,10 @@ def float16ToBeBytes(byteA, index, number, sigbits):
     Returns:
         index (int): The incremented index increased by 2
     """
-    uint16ToBeBytes(float32ToFloat16(number, sigbits), bytes, index)
+    index = uint16ToBeBytes(byteA, index, float32ToFloat16(number, sigbits))
+    return index
 
-def float16ToLeBytes(byteA, index, number, sigbits):
+def float16ToLeBytes(byteA: bytearray, index: int, number: float, sigbits: int) -> int:
     """Encode a signed 2 byte integer on a little endian byte stream.
 
     Args:
@@ -716,6 +719,8 @@ def float16ToLeBytes(byteA, index, number, sigbits):
     Returns:
         index (int): The incremented index increased by 2
     """
-    uint16ToLeBytes(float32ToFloat16(number, sigbits), bytes, index)
+    index = uint16ToLeBytes(byteA, index, float32ToFloat16(number, sigbits))
+    return index
+
 
 # end of fieldencode.py

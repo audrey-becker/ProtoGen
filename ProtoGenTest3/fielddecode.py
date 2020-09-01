@@ -6,7 +6,7 @@ from floatspecial import *
 
 # supporting 64 bit sizes
 
-def uint64FromBeBytes(byteA, index):
+def uint64FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 8 byte integer from a big endian byte stream.
 
     Args:
@@ -25,7 +25,7 @@ def uint64FromBeBytes(byteA, index):
 
     return number[0]
 
-def uint64FromLeBytes(byteA, index):
+def uint64FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 8 byte integer from a little endian byte stream.
 
     Args:
@@ -44,7 +44,7 @@ def uint64FromLeBytes(byteA, index):
 
     return number[0]
 
-def int64FromBeBytes(byteA, index):
+def int64FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 8 byte integer from a big endian byte stream.
 
     Args:
@@ -63,7 +63,7 @@ def int64FromBeBytes(byteA, index):
 
     return number[0]
 
-def int64FromLeBytes(byteA, index):
+def int64FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 8 byte integer from a little endian byte stream.
 
     Args:
@@ -82,7 +82,7 @@ def int64FromLeBytes(byteA, index):
 
     return number[0]
 
-def uint56FromBeBytes(byteA, index):
+def uint56FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 7 byte integer from a big endian byte stream.
 
     Args:
@@ -116,7 +116,7 @@ def uint56FromBeBytes(byteA, index):
     index[0] = index[0] + 7
     return number[0]
 
-def uint56FromLeBytes(byteA, index):
+def uint56FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 7 byte integer from a little endian byte stream.
 
     Args:
@@ -150,7 +150,7 @@ def uint56FromLeBytes(byteA, index):
     index[0] = index[0] + 7
     return number[0]
 
-def int56FromBeBytes(byteA, index):
+def int56FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 7 byte integer from a big endian byte stream.
 
     Args:
@@ -189,7 +189,7 @@ def int56FromBeBytes(byteA, index):
     index[0] = index[0] + 7
     return number[0]
 
-def int56FromLeBytes(byteA, index):
+def int56FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 7 byte integer from a little endian byte stream.
 
     Args:
@@ -228,7 +228,7 @@ def int56FromLeBytes(byteA, index):
     index[0] = index[0] + 7
     return number[0]
 
-def uint48FromBeBytes(byteA, index):
+def uint48FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 6 byte integer from a big endian byte stream.
 
     Args:
@@ -262,7 +262,7 @@ def uint48FromBeBytes(byteA, index):
     index[0] = index[0] + 6
     return number[0]
 
-def uint48FromLeBytes(byteA, index):
+def uint48FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 6 byte integer from a little endian byte stream.
 
     Args:
@@ -296,7 +296,7 @@ def uint48FromLeBytes(byteA, index):
     index[0] = index[0] + 6
     return number[0]
 
-def int48FromBeBytes(byteA, index):
+def int48FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 6 byte integer from a big endian byte stream.
 
     Args:
@@ -335,7 +335,7 @@ def int48FromBeBytes(byteA, index):
     index[0] = index[0] + 6
     return number[0]
 
-def int48FromLeBytes(byteA, index):
+def int48FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 6 byte integer from a little endian byte stream.
 
     Args:
@@ -374,7 +374,7 @@ def int48FromLeBytes(byteA, index):
     index[0] = index[0] + 6
     return number[0]
 
-def uint40FromBeBytes(byteA, index):
+def uint40FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 5 byte integer from a big endian byte stream.
 
     Args:
@@ -408,7 +408,7 @@ def uint40FromBeBytes(byteA, index):
     index[0] = index[0] + 5
     return number[0]
 
-def uint40FromLeBytes(byteA, index):
+def uint40FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 5 byte integer from a little endian byte stream.
 
     Args:
@@ -442,7 +442,7 @@ def uint40FromLeBytes(byteA, index):
     index[0] = index[0] + 5
     return number[0]
 
-def int40FromBeBytes(byteA, index):
+def int40FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 5 byte integer from a big endian byte stream.
 
     Args:
@@ -481,7 +481,7 @@ def int40FromBeBytes(byteA, index):
     index[0] = index[0] + 5
     return number[0]
 
-def int40FromLeBytes(byteA, index):
+def int40FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 5 byte integer from a little endian byte stream.
 
     Args:
@@ -522,7 +522,7 @@ def int40FromLeBytes(byteA, index):
 
 # end supporting 64 bit sizes
 
-def float32FromBeBytes(byteA, index):
+def float32FromBeBytes(byteA: bytearray, index: int) -> float:
     """Decode a 4 byte float from a big endian byte stream.
 
     Args:
@@ -540,12 +540,12 @@ def float32FromBeBytes(byteA, index):
     index[0] = index[0] + 4
 
     # Verify that the unpacked float is valid
-    if isFloat32Valid(float32ToInt(number[0])) is true:
+    if isFloat32Valid(float32ToInt(number[0])) is True:
         return number[0]
     else:
         return 0
 
-def float32FromLeBytes(byteA, index):
+def float32FromLeBytes(byteA: bytearray, index: int) -> float:
     """Decode a 4 byte float from a little endian byte stream.
 
     Args:
@@ -563,12 +563,12 @@ def float32FromLeBytes(byteA, index):
     index[0] = index[0] + 4
 
     # Verify that the unpacked float is valid
-    if isFloat32Valid(float32ToInt(number[0])) is true:
+    if isFloat32Valid(float32ToInt(number[0])) is True:
         return number[0]
     else:
         return 0
 
-def uint32FromBeBytes(byteA, index):
+def uint32FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 4 byte integer from a big endian byte stream.
 
     Args:
@@ -587,7 +587,7 @@ def uint32FromBeBytes(byteA, index):
 
     return number[0]
 
-def uint32FromLeBytes(byteA, index):
+def uint32FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 4 byte integer from a little endian byte stream.
 
     Args:
@@ -606,7 +606,7 @@ def uint32FromLeBytes(byteA, index):
 
     return number[0]
 
-def int32FromBeBytes(byteA, index):
+def int32FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 4 byte integer from a big endian byte stream.
 
     Args:
@@ -625,7 +625,7 @@ def int32FromBeBytes(byteA, index):
 
     return number[0]
 
-def int32FromLeBytes(byteA, index):
+def int32FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 4 byte integer from a little endian byte stream.
 
     Args:
@@ -644,7 +644,7 @@ def int32FromLeBytes(byteA, index):
 
     return number[0]
 
-def uint24FromBeBytes(byteA, index):
+def uint24FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 3 byte integer from a big endian byte stream.
 
     Args:
@@ -674,7 +674,7 @@ def uint24FromBeBytes(byteA, index):
     index[0] = index[0] + 3
     return number[0]
 
-def uint24FromLeBytes(byteA, index):
+def uint24FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 3 byte integer from a little endian byte stream.
 
     Args:
@@ -704,7 +704,7 @@ def uint24FromLeBytes(byteA, index):
     index[0] = index[0] + 3
     return number[0]
 
-def int24FromBeBytes(byteA, index):
+def int24FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 3 byte integer from a big endian byte stream.
 
     Args:
@@ -739,7 +739,7 @@ def int24FromBeBytes(byteA, index):
     index[0] = index[0] + 3
     return number[0]
 
-def int24FromLeBytes(byteA, index):
+def int24FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 3 byte integer from a little endian byte stream.
 
     Args:
@@ -774,7 +774,7 @@ def int24FromLeBytes(byteA, index):
     index[0] = index[0] + 3
     return number[0]
 
-def uint16FromBeBytes(byteA, index):
+def uint16FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 2 byte integer from a big endian byte stream.
 
     Args:
@@ -793,7 +793,7 @@ def uint16FromBeBytes(byteA, index):
 
     return number[0]
 
-def uint16FromLeBytes(byteA, index):
+def uint16FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a unsigned 2 byte integer from a little endian byte stream.
 
     Args:
@@ -812,7 +812,7 @@ def uint16FromLeBytes(byteA, index):
 
     return number[0]
 
-def int16FromBeBytes(byteA, index):
+def int16FromBeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 2 byte integer from a big endian byte stream.
 
     Args:
@@ -831,7 +831,7 @@ def int16FromBeBytes(byteA, index):
 
     return number[0]
 
-def int16FromLeBytes(byteA, index):
+def int16FromLeBytes(byteA: bytearray, index: int) -> int:
     """Decode a signed 2 byte integer from a little endian byte stream.
 
     Args:
@@ -850,7 +850,7 @@ def int16FromLeBytes(byteA, index):
 
     return number[0]
 
-def float64FromBeBytes(byteA, index):
+def float64FromBeBytes(byteA: bytearray, index: int) -> float:
     """Decode a 8 byte float from a big endian byte stream.
 
     Args:
@@ -868,12 +868,12 @@ def float64FromBeBytes(byteA, index):
     index[0] = index[0] + 8
 
     # Verify that the unpacked float is valid
-    if isFloat64Valid(float64ToInt(number[0])) is true:
+    if isFloat64Valid(float64ToInt(number[0])) is True:
         return number[0]
     else:
         return 0
 
-def float64FromLeBytes(byteA, index):
+def float64FromLeBytes(byteA: bytearray, index: int) -> float:
     """Decode a 8 byte float from a little endian byte stream.
 
     Args:
@@ -891,12 +891,12 @@ def float64FromLeBytes(byteA, index):
     index[0] = index[0] + 8
 
     # Verify that the unpacked float is valid
-    if isFloat64Valid(float64ToInt(number[0])) is true:
+    if isFloat64Valid(float64ToInt(number[0])) is True:
         return number[0]
     else:
         return 0
 
-def float24FromBeBytes(byteA, index, sigbits):
+def float24FromBeBytes(byteA: bytearray, index: int, sigbits: int) -> float:
     """Decode a signed 3 byte integer from a big endian byte stream.
 
     Args:
@@ -912,7 +912,7 @@ def float24FromBeBytes(byteA, index, sigbits):
     """
     return float24ToFloat32(uint24FromBeBytes(byteA, index), sigbits)
 
-def float24FromLeBytes(byteA, index, sigbits):
+def float24FromLeBytes(byteA: bytearray, index: int, sigbits: int) -> float:
     """Decode a signed 3 byte integer from a little endian byte stream.
 
     Args:
@@ -928,7 +928,7 @@ def float24FromLeBytes(byteA, index, sigbits):
     """
     return float24ToFloat32(uint24FromLeBytes(byteA, index), sigbits)
 
-def float16FromBeBytes(byteA, index, sigbits):
+def float16FromBeBytes(byteA: bytearray, index: int, sigbits: int) -> float:
     """Decode a signed 2 byte integer from a big endian byte stream.
 
     Args:
@@ -944,7 +944,7 @@ def float16FromBeBytes(byteA, index, sigbits):
     """
     return float16ToFloat32(uint16FromBeBytes(byteA, index), sigbits)
 
-def float16FromLeBytes(byteA, index, sigbits):
+def float16FromLeBytes(byteA: bytearray, index: int, sigbits: int) -> float:
     """Decode a signed 2 byte integer from a little endian byte stream.
 
     Args:
