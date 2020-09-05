@@ -157,6 +157,9 @@ protected:
     //! Return the name in function signature of this type
     std::string typeSigName(encodedtypes_t type) const;
 
+    //! Return the name in function signature of this type
+    std::string ctypeName(encodedtypes_t type) const;
+
     //! Determine if type is supported by this protocol
     bool isTypeSupported(inmemorytypes_t type) const;
 
@@ -226,16 +229,6 @@ protected:
     //! Generate the full decode function
     std::string fullDecodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
 
-    //! Generate the full decode function for integer scaling
-    std::string fullBitfieldDecodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
-
-    //! Generate the full decode function for floating point scaling
-    std::string fullFloatDecodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const ;
-
-    //! Generate the full decode function for integer scaling
-    std::string fullIntegerDecodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
-
-
 };
 
 
@@ -258,6 +251,44 @@ public:
     //! Generate the decode source file
     bool generateDecodeSource(ProtocolSourceFile &source);
 
+protected:
+    //! Generate the one line brief comment for the encode function
+    std::string briefEncodeComment(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
+
+    //! Generate the full comment for the encode function
+    std::string fullEncodeComment(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
+
+    //! Generate the encode function signature
+    std::string encodeSignature(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
+
+    //! Generate the full encode function
+    std::string fullEncodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
+
+    //! Find the max value for a type
+    std::string findMax(encodedtypes_t encoded) const;
+
+    std::string findMin(encodedtypes_t encoded) const;
+
+    //! Generate the full encode function for integer scaling
+    std::string fullBitfieldEncodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
+
+    //! Generate the full encode function for floating point scaling
+    std::string fullFloatEncodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const ;
+
+    //! Generate the full encode function for integer scaling
+    std::string fullIntegerEncodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
+
+    //! Generate the one line brief comment for the decode function
+    std::string briefDecodeComment(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
+
+    //! Generate the full comment for the decode function
+    std::string fullDecodeComment(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
+
+    //! Generate the decode function signature
+    std::string decodeSignature(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
+
+    //! Generate the full decode function
+    std::string fullDecodeFunction(inmemorytypes_t source, encodedtypes_t encoded, bool bigendian) const;
 
 
 };

@@ -1584,7 +1584,7 @@ std::string PythonCoding::fullPyEncodeFunction(int type, bool bigendian)
  */
 std::string PythonCoding::pyEncodeComment(int type, bool bigendian)
 {
-    std::string summary = briefEncodeComment(type, bigendian) + "\n\n"; // NOTE: incorrect cause of no xml
+    std::string summary = briefEncodeComment(type, bigendian) + "\n\n";
     std::string    args = R"(    Args:
         number (int): the value to encode
         byteA  (byteArray): The byte stream where the data is encoded
@@ -1602,13 +1602,8 @@ std::string PythonCoding::pyEncodeComment(int type, bool bigendian)
     std::string quotes = R"(    """)";
     std::string comment = quotes + summary + args + returns + quotes + "\n";
 
-//    TODO: implement for special float
-//    if(contains(typeSigNames[type], "float24") || contains(typeSigNames[type], "float16"))
-//        comment += " * \\param sigbits is the number of bits to use in the significand of the float.\n";
-//    comment += " */";
-
-
     return comment;
+
 } // PythonCoding::pyEncodeComment
 
 
@@ -1705,7 +1700,7 @@ std::string PythonCoding::pyEncodeFunction(std::string signature, std::string co
 
     if (specialSize) {
         specialSize = false;
-        function = pyEncodeSpecialSize(function, format, type, bigendian);
+        function = pyEncodeSpecialSize(function, type, bigendian);
         return function;
     }
 
@@ -1725,11 +1720,11 @@ std::string PythonCoding::pyEncodeFunction(std::string signature, std::string co
  * \param function is the whole function up to this point
  * \return special size function based on size and endian
  */
-std::string PythonCoding::pyEncodeSpecialSize(std::string function, std::string format, int type, bool bigendian)
+std::string PythonCoding::pyEncodeSpecialSize(std::string function, int type, bool bigendian)
 {
+
     std::string sign   = "";
     std::string endian = "";
-    std::string bytes  = "";
 
     // Determine the if the type is signed
     if(typeUnsigneds[type])
@@ -1738,25 +1733,23 @@ std::string PythonCoding::pyEncodeSpecialSize(std::string function, std::string 
         sign = "True";
 
     // determine if the type is be/le
-    if ( bigendian )
+    if (bigendian)
         endian = "'big', ";
     else
         endian = "'little', ";
 
-    // extract the bytes for the packing function
-    for ( int i = 0; i < typeSizes[type]; i++)
-    {
-        bytes += "n_byte[" + std::to_string(i) + "], ";
 
+    // turn the number into a bytes
+    function += "    n_byte = number.to_bytes(" + std::to_string(typeSizes[type]) + ", " + endian + "signed=" + sign + ")\n\n";
+
+
+    // assign the bytes from the number to the bytearray
+    for (int i = 0; i < typeSizes[type]; i++)
+    {
+        function += "    byteA[index + " + std::to_string(i) + "] = n_byte[" + std::to_string(i) + "]\n";
     }
 
-    // chops of extranious comma
-    bytes =  bytes.substr(0, bytes.find_last_of(","));
-
-
-    function += "    n_byte = number.to_bytes(" + std::to_string(typeSizes[type]) + ", " + endian + "signed=" + sign + ")\n\n";
-    function += "    pack_into(" + format + ", byteA, index, " + bytes + ")\n";
-
+    // update the index
     function += "    index += " + std::to_string(typeSizes[type]) + "\n    return index\n\n";
 
     return function;
@@ -1849,7 +1842,7 @@ std::string PythonCoding::pyDecodeFunction(std::string signature, std::string co
     if (specialSize)
     {
         specialSize = false;
-        function = pyDecodeSpecialSize(function, format, type, bigendian);
+        function = pyDecodeSpecialSize(function, type, bigendian);
         return function;
     }
 
@@ -1881,7 +1874,7 @@ std::string PythonCoding::pyDecodeFunction(std::string signature, std::string co
  * \param function is the whole function up to this point
  * \return decode function for non standard size
  */
-std::string PythonCoding::pyDecodeSpecialSize(std::string function, std::string format, int type, bool bigendian)
+std::string PythonCoding::pyDecodeSpecialSize(std::string function, int type, bool bigendian)
 {
     int size = typeSizes[type];
     int fullSize;
@@ -1892,30 +1885,43 @@ std::string PythonCoding::pyDecodeSpecialSize(std::string function, std::string 
     if ( size > 4 and size < 8)
         fullSize = 8;
 
+    // determine the format of the in memory type
     format2 = secondFormat(fullSize, bigendian, typeUnsigneds[type]);
 
     std::string s_size = std::to_string(size);
     std::string s_fullSize = std::to_string(fullSize);
     std::string pad = "0";
+    std::string extention_byte;
 
-    function += "    n_byte     = unpack_from(" + format + ", byteA, offset=index[0])\n";
+    function += "    offset = index[0]\n\n";
+    function += "    # declare enough bytes for the next largest standard size\n";
     function += "    full_bytes = bytearray(" + s_fullSize + ")\n\n";
 
+    // if signed perform sign extenstion
     if(!typeUnsigneds[type]) {
-        function += "    # determine byte extesion value\n    pad = 0\n    if (n_byte[0] >> 7) == 1:\n        pad = 255\n\n";
+
+        // based on the endian determine if the sign is the 0th byte or the final byte extracted
+        if (bigendian)
+            extention_byte = "0";
+        else
+            extention_byte = "offset + " + std::to_string(size - 1);
+
+        function += "    # determine byte extesion value\n    pad = 0\n    if (byteA[" + extention_byte + "] >> 7) == 1:\n";
+        function += "        pad = 255\n\n";
         pad = "pad";
     }
 
+    // extract the bytes directly from the bytearray into a fullsize sign extended temporary array
     if (bigendian)
     {
-        function += "    # transfer the unpacked bytes into the fullsized type\n";
+        function += "    # transfer the bytes from the bytearray into the fullsized type\n";
         for ( int i = 0; i < fullSize; i++)
         {
             if ( i < (fullSize - size))
                 function += "    full_bytes[" + std::to_string(i) + "] = " + pad + "\n";
             else
             {
-                function += "    full_bytes[" + std::to_string(i) + "] = n_byte[";
+                function += "    full_bytes[" + std::to_string(i) + "] = byteA[offset + ";
                 function += std::to_string(i - (fullSize - size)) + "]\n";
             }
         }
@@ -1923,23 +1929,25 @@ std::string PythonCoding::pyDecodeSpecialSize(std::string function, std::string 
     }
     else
     {
-        function += "    # transfer the unpacked bytes into the fullsized type\n";
+        function += "    # transfer the bytes from the bytearray into the fullsized type\n";
         for ( int i = fullSize - 1; i >= 0; i-- )
         {
             if ( i >= size)
                 function += "    full_bytes[" + std::to_string(i) + "] = " + pad + "\n";
             else
             {
-                function += "    full_bytes[" + std::to_string(i) + "] = n_byte[" + std::to_string(i) + "]\n";
+                function += "    full_bytes[" + std::to_string(i) + "] = byteA[offset + " + std::to_string(i) + "]\n";
             }
         }
         function += "\n";
     }
 
+    // turn the full sized temporary array bytes into a number
     function += "    # unpack the full sized value\n    number = unpack_from(" + format2 + ", full_bytes, 0)\n\n";
     function += "    # update the index and return the first element of the tuple\n    index[0] = index[0] + " + s_size + "\n    return number[0]\n";
 
     return function;
+
 } // PythonCoding::pyDecodeSpecialSize
 
 
@@ -1980,10 +1988,10 @@ std::string PythonCoding::pyDecodeComment(int type, bool bigendian)
 
     std::string    args = R"(    Args:
         byteA  (byteArray): The byte stream which contains the encodes data
-        index  (list): a list where index 0 is the location of the first
+        index  (list): a list where index 0 is the offset to the first
             byte in the byte stream and will be incremented by )";
                     args += std::to_string(typeSizes[type]);
-                    args += "\n            * this gurantees that the index will be updates\n";
+                    args += "\n            * this gurantees that the index will be updated\n";
                     args += "              since you cannot pass an integer by reference\n";
 
     if(contains(typeSigNames[type], "float24") || contains(typeSigNames[type], "float16"))

@@ -13,7 +13,7 @@ def float32ToInt(value: float) -> int:
     integer = unpack("I", byteA)
     return integer[0]
 
-def float64ToInt(value: double) -> int:
+def float64ToInt(value: float) -> int:
     """ Converts the bits of a float64 to type int with same bit pattern."""
     byteA = pack("d", value)
     integer = unpack("q", byteA)
@@ -25,7 +25,7 @@ def int32ToFloat(value: int) -> float:
     Float = unpack("f", byteA)
     return Float[0]
 
-def int64ToFloat(value: int) -> double:
+def int64ToFloat(value: int) -> float:
     """ Converts the bits of a int64 to type float64 with same bit pattern."""
     byteA = pack("q", value)
     Float = unpack("d", byteA)
@@ -63,7 +63,7 @@ def isFloat32Valid(value: float) -> bool:
     # If we get here then its a valid float
     return True
 
-def isFloat64Valid(value: double) -> bool:
+def isFloat64Valid(value: float) -> bool:
     """ Check if a 64-bit field is a valid 64-bit IEEE-754 float.
 
         Args:
@@ -216,7 +216,7 @@ def float24ToFloat32(value: int, sigbits: int) -> float:
 
     return int32ToFloat(Integer)
 
-def float32ToFloat16(value: float, sigbits: int) -> short:
+def float32ToFloat16(value: float, sigbits: int) -> int:
     """ Convert a 32-bit floating point value (IEEE-754 binary32) to 16-bit floating
         point representation with a variable number of bits for the significand
 
@@ -313,7 +313,7 @@ def float32ToFloat16(value: float, sigbits: int) -> short:
     # return the binary16 representation
     return output.value
 
-def float16ToFloat32(value: short, sigbits: int) -> float:
+def float16ToFloat32(value: int, sigbits: int) -> float:
     """ Convert a 16-bit floating point representation with variable number of
         significand bits to binary32
 

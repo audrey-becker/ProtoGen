@@ -105,7 +105,13 @@ def uint56ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(7, 'big', signed=False)
 
-    pack_into('>7B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4], n_byte[5], n_byte[6])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
+    byteA[index + 5] = n_byte[5]
+    byteA[index + 6] = n_byte[6]
     index += 7
     return index
 
@@ -127,7 +133,13 @@ def uint56ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(7, 'little', signed=False)
 
-    pack_into('<7B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4], n_byte[5], n_byte[6])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
+    byteA[index + 5] = n_byte[5]
+    byteA[index + 6] = n_byte[6]
     index += 7
     return index
 
@@ -149,7 +161,13 @@ def int56ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(7, 'big', signed=True)
 
-    pack_into('>7B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4], n_byte[5], n_byte[6])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
+    byteA[index + 5] = n_byte[5]
+    byteA[index + 6] = n_byte[6]
     index += 7
     return index
 
@@ -171,7 +189,13 @@ def int56ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(7, 'little', signed=True)
 
-    pack_into('<7B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4], n_byte[5], n_byte[6])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
+    byteA[index + 5] = n_byte[5]
+    byteA[index + 6] = n_byte[6]
     index += 7
     return index
 
@@ -193,7 +217,12 @@ def uint48ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(6, 'big', signed=False)
 
-    pack_into('>6B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4], n_byte[5])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
+    byteA[index + 5] = n_byte[5]
     index += 6
     return index
 
@@ -215,7 +244,12 @@ def uint48ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(6, 'little', signed=False)
 
-    pack_into('<6B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4], n_byte[5])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
+    byteA[index + 5] = n_byte[5]
     index += 6
     return index
 
@@ -237,7 +271,12 @@ def int48ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(6, 'big', signed=True)
 
-    pack_into('>6B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4], n_byte[5])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
+    byteA[index + 5] = n_byte[5]
     index += 6
     return index
 
@@ -259,7 +298,12 @@ def int48ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(6, 'little', signed=True)
 
-    pack_into('<6B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4], n_byte[5])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
+    byteA[index + 5] = n_byte[5]
     index += 6
     return index
 
@@ -281,7 +325,11 @@ def uint40ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(5, 'big', signed=False)
 
-    pack_into('>5B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
     index += 5
     return index
 
@@ -303,7 +351,11 @@ def uint40ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(5, 'little', signed=False)
 
-    pack_into('<5B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
     index += 5
     return index
 
@@ -325,7 +377,11 @@ def int40ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(5, 'big', signed=True)
 
-    pack_into('>5B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
     index += 5
     return index
 
@@ -347,7 +403,11 @@ def int40ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(5, 'little', signed=True)
 
-    pack_into('<5B', byteA, index, n_byte[0], n_byte[1], n_byte[2], n_byte[3], n_byte[4])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
+    byteA[index + 3] = n_byte[3]
+    byteA[index + 4] = n_byte[4]
     index += 5
     return index
 
@@ -482,7 +542,9 @@ def uint24ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(3, 'big', signed=False)
 
-    pack_into('>3B', byteA, index, n_byte[0], n_byte[1], n_byte[2])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
     index += 3
     return index
 
@@ -504,7 +566,9 @@ def uint24ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(3, 'little', signed=False)
 
-    pack_into('<3B', byteA, index, n_byte[0], n_byte[1], n_byte[2])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
     index += 3
     return index
 
@@ -526,7 +590,9 @@ def int24ToBeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(3, 'big', signed=True)
 
-    pack_into('>3B', byteA, index, n_byte[0], n_byte[1], n_byte[2])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
     index += 3
     return index
 
@@ -548,7 +614,9 @@ def int24ToLeBytes(byteA: bytearray, index: int, number: int) -> int:
 
     n_byte = number.to_bytes(3, 'little', signed=True)
 
-    pack_into('<3B', byteA, index, n_byte[0], n_byte[1], n_byte[2])
+    byteA[index + 0] = n_byte[0]
+    byteA[index + 1] = n_byte[1]
+    byteA[index + 2] = n_byte[2]
     index += 3
     return index
 

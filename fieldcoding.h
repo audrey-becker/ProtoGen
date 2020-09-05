@@ -124,7 +124,7 @@ protected:
     std::string pyEncodeFunction(std::string signature, std::string comment, std::string format, int type, bool bigendian);
 
     //! encode the non standard size types including 24, 40, 48, 56
-    std::string pyEncodeSpecialSize(std::string function, std::string format, int type, bool bigendian);
+    std::string pyEncodeSpecialSize(std::string function, int type, bool bigendian);
 
     //! encode the non standard size floats including 16 and 24
     std::string pyEncodeSpecialFloat(std::string function, int type, bool bigendian);
@@ -139,7 +139,7 @@ protected:
     std::string pyDecodeFunction(std::string signature, std::string comment, std::string format, int type, bool bigendian);
 
     //! decode the non standard size types like 24, 40, 48, 56
-    std::string pyDecodeSpecialSize(std::string function, std::string format, int type, bool bigendian);
+    std::string pyDecodeSpecialSize(std::string function, int type, bool bigendian);
 
     //! decode the non standard size floats including 16 and 24
     std::string pyDecodeSpecialFloat(std::string function, int type, bool bigendian);

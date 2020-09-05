@@ -96,18 +96,22 @@ def uint56FromBeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('>7B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[0] = 0
-    full_bytes[1] = n_byte[0]
-    full_bytes[2] = n_byte[1]
-    full_bytes[3] = n_byte[2]
-    full_bytes[4] = n_byte[3]
-    full_bytes[5] = n_byte[4]
-    full_bytes[6] = n_byte[5]
-    full_bytes[7] = n_byte[6]
+    full_bytes[1] = byteA[offset + 0]
+    full_bytes[2] = byteA[offset + 1]
+    full_bytes[3] = byteA[offset + 2]
+    full_bytes[4] = byteA[offset + 3]
+    full_bytes[5] = byteA[offset + 4]
+    full_bytes[6] = byteA[offset + 5]
+    full_bytes[7] = byteA[offset + 6]
 
     # unpack the full sized value
     number = unpack_from('>Q', full_bytes, 0)
@@ -130,18 +134,22 @@ def uint56FromLeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('<7B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[7] = 0
-    full_bytes[6] = n_byte[6]
-    full_bytes[5] = n_byte[5]
-    full_bytes[4] = n_byte[4]
-    full_bytes[3] = n_byte[3]
-    full_bytes[2] = n_byte[2]
-    full_bytes[1] = n_byte[1]
-    full_bytes[0] = n_byte[0]
+    full_bytes[6] = byteA[offset + 6]
+    full_bytes[5] = byteA[offset + 5]
+    full_bytes[4] = byteA[offset + 4]
+    full_bytes[3] = byteA[offset + 3]
+    full_bytes[2] = byteA[offset + 2]
+    full_bytes[1] = byteA[offset + 1]
+    full_bytes[0] = byteA[offset + 0]
 
     # unpack the full sized value
     number = unpack_from('<Q', full_bytes, 0)
@@ -164,23 +172,27 @@ def int56FromBeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('>7B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
     # determine byte extesion value
     pad = 0
-    if (n_byte[0] >> 7) == 1:
+    if (byteA[0] >> 7) == 1:
         pad = 255
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[0] = pad
-    full_bytes[1] = n_byte[0]
-    full_bytes[2] = n_byte[1]
-    full_bytes[3] = n_byte[2]
-    full_bytes[4] = n_byte[3]
-    full_bytes[5] = n_byte[4]
-    full_bytes[6] = n_byte[5]
-    full_bytes[7] = n_byte[6]
+    full_bytes[1] = byteA[offset + 0]
+    full_bytes[2] = byteA[offset + 1]
+    full_bytes[3] = byteA[offset + 2]
+    full_bytes[4] = byteA[offset + 3]
+    full_bytes[5] = byteA[offset + 4]
+    full_bytes[6] = byteA[offset + 5]
+    full_bytes[7] = byteA[offset + 6]
 
     # unpack the full sized value
     number = unpack_from('>q', full_bytes, 0)
@@ -203,23 +215,27 @@ def int56FromLeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('<7B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
     # determine byte extesion value
     pad = 0
-    if (n_byte[0] >> 7) == 1:
+    if (byteA[offset + 6] >> 7) == 1:
         pad = 255
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[7] = pad
-    full_bytes[6] = n_byte[6]
-    full_bytes[5] = n_byte[5]
-    full_bytes[4] = n_byte[4]
-    full_bytes[3] = n_byte[3]
-    full_bytes[2] = n_byte[2]
-    full_bytes[1] = n_byte[1]
-    full_bytes[0] = n_byte[0]
+    full_bytes[6] = byteA[offset + 6]
+    full_bytes[5] = byteA[offset + 5]
+    full_bytes[4] = byteA[offset + 4]
+    full_bytes[3] = byteA[offset + 3]
+    full_bytes[2] = byteA[offset + 2]
+    full_bytes[1] = byteA[offset + 1]
+    full_bytes[0] = byteA[offset + 0]
 
     # unpack the full sized value
     number = unpack_from('<q', full_bytes, 0)
@@ -242,18 +258,22 @@ def uint48FromBeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('>6B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[0] = 0
     full_bytes[1] = 0
-    full_bytes[2] = n_byte[0]
-    full_bytes[3] = n_byte[1]
-    full_bytes[4] = n_byte[2]
-    full_bytes[5] = n_byte[3]
-    full_bytes[6] = n_byte[4]
-    full_bytes[7] = n_byte[5]
+    full_bytes[2] = byteA[offset + 0]
+    full_bytes[3] = byteA[offset + 1]
+    full_bytes[4] = byteA[offset + 2]
+    full_bytes[5] = byteA[offset + 3]
+    full_bytes[6] = byteA[offset + 4]
+    full_bytes[7] = byteA[offset + 5]
 
     # unpack the full sized value
     number = unpack_from('>Q', full_bytes, 0)
@@ -276,18 +296,22 @@ def uint48FromLeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('<6B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[7] = 0
     full_bytes[6] = 0
-    full_bytes[5] = n_byte[5]
-    full_bytes[4] = n_byte[4]
-    full_bytes[3] = n_byte[3]
-    full_bytes[2] = n_byte[2]
-    full_bytes[1] = n_byte[1]
-    full_bytes[0] = n_byte[0]
+    full_bytes[5] = byteA[offset + 5]
+    full_bytes[4] = byteA[offset + 4]
+    full_bytes[3] = byteA[offset + 3]
+    full_bytes[2] = byteA[offset + 2]
+    full_bytes[1] = byteA[offset + 1]
+    full_bytes[0] = byteA[offset + 0]
 
     # unpack the full sized value
     number = unpack_from('<Q', full_bytes, 0)
@@ -310,23 +334,27 @@ def int48FromBeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('>6B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
     # determine byte extesion value
     pad = 0
-    if (n_byte[0] >> 7) == 1:
+    if (byteA[0] >> 7) == 1:
         pad = 255
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[0] = pad
     full_bytes[1] = pad
-    full_bytes[2] = n_byte[0]
-    full_bytes[3] = n_byte[1]
-    full_bytes[4] = n_byte[2]
-    full_bytes[5] = n_byte[3]
-    full_bytes[6] = n_byte[4]
-    full_bytes[7] = n_byte[5]
+    full_bytes[2] = byteA[offset + 0]
+    full_bytes[3] = byteA[offset + 1]
+    full_bytes[4] = byteA[offset + 2]
+    full_bytes[5] = byteA[offset + 3]
+    full_bytes[6] = byteA[offset + 4]
+    full_bytes[7] = byteA[offset + 5]
 
     # unpack the full sized value
     number = unpack_from('>q', full_bytes, 0)
@@ -349,23 +377,27 @@ def int48FromLeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('<6B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
     # determine byte extesion value
     pad = 0
-    if (n_byte[0] >> 7) == 1:
+    if (byteA[offset + 5] >> 7) == 1:
         pad = 255
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[7] = pad
     full_bytes[6] = pad
-    full_bytes[5] = n_byte[5]
-    full_bytes[4] = n_byte[4]
-    full_bytes[3] = n_byte[3]
-    full_bytes[2] = n_byte[2]
-    full_bytes[1] = n_byte[1]
-    full_bytes[0] = n_byte[0]
+    full_bytes[5] = byteA[offset + 5]
+    full_bytes[4] = byteA[offset + 4]
+    full_bytes[3] = byteA[offset + 3]
+    full_bytes[2] = byteA[offset + 2]
+    full_bytes[1] = byteA[offset + 1]
+    full_bytes[0] = byteA[offset + 0]
 
     # unpack the full sized value
     number = unpack_from('<q', full_bytes, 0)
@@ -388,18 +420,22 @@ def uint40FromBeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('>5B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[0] = 0
     full_bytes[1] = 0
     full_bytes[2] = 0
-    full_bytes[3] = n_byte[0]
-    full_bytes[4] = n_byte[1]
-    full_bytes[5] = n_byte[2]
-    full_bytes[6] = n_byte[3]
-    full_bytes[7] = n_byte[4]
+    full_bytes[3] = byteA[offset + 0]
+    full_bytes[4] = byteA[offset + 1]
+    full_bytes[5] = byteA[offset + 2]
+    full_bytes[6] = byteA[offset + 3]
+    full_bytes[7] = byteA[offset + 4]
 
     # unpack the full sized value
     number = unpack_from('>Q', full_bytes, 0)
@@ -422,18 +458,22 @@ def uint40FromLeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('<5B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[7] = 0
     full_bytes[6] = 0
     full_bytes[5] = 0
-    full_bytes[4] = n_byte[4]
-    full_bytes[3] = n_byte[3]
-    full_bytes[2] = n_byte[2]
-    full_bytes[1] = n_byte[1]
-    full_bytes[0] = n_byte[0]
+    full_bytes[4] = byteA[offset + 4]
+    full_bytes[3] = byteA[offset + 3]
+    full_bytes[2] = byteA[offset + 2]
+    full_bytes[1] = byteA[offset + 1]
+    full_bytes[0] = byteA[offset + 0]
 
     # unpack the full sized value
     number = unpack_from('<Q', full_bytes, 0)
@@ -456,23 +496,27 @@ def int40FromBeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('>5B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
     # determine byte extesion value
     pad = 0
-    if (n_byte[0] >> 7) == 1:
+    if (byteA[0] >> 7) == 1:
         pad = 255
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[0] = pad
     full_bytes[1] = pad
     full_bytes[2] = pad
-    full_bytes[3] = n_byte[0]
-    full_bytes[4] = n_byte[1]
-    full_bytes[5] = n_byte[2]
-    full_bytes[6] = n_byte[3]
-    full_bytes[7] = n_byte[4]
+    full_bytes[3] = byteA[offset + 0]
+    full_bytes[4] = byteA[offset + 1]
+    full_bytes[5] = byteA[offset + 2]
+    full_bytes[6] = byteA[offset + 3]
+    full_bytes[7] = byteA[offset + 4]
 
     # unpack the full sized value
     number = unpack_from('>q', full_bytes, 0)
@@ -495,23 +539,27 @@ def int40FromLeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('<5B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(8)
 
     # determine byte extesion value
     pad = 0
-    if (n_byte[0] >> 7) == 1:
+    if (byteA[offset + 4] >> 7) == 1:
         pad = 255
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[7] = pad
     full_bytes[6] = pad
     full_bytes[5] = pad
-    full_bytes[4] = n_byte[4]
-    full_bytes[3] = n_byte[3]
-    full_bytes[2] = n_byte[2]
-    full_bytes[1] = n_byte[1]
-    full_bytes[0] = n_byte[0]
+    full_bytes[4] = byteA[offset + 4]
+    full_bytes[3] = byteA[offset + 3]
+    full_bytes[2] = byteA[offset + 2]
+    full_bytes[1] = byteA[offset + 1]
+    full_bytes[0] = byteA[offset + 0]
 
     # unpack the full sized value
     number = unpack_from('<q', full_bytes, 0)
@@ -658,14 +706,18 @@ def uint24FromBeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('>3B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(4)
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[0] = 0
-    full_bytes[1] = n_byte[0]
-    full_bytes[2] = n_byte[1]
-    full_bytes[3] = n_byte[2]
+    full_bytes[1] = byteA[offset + 0]
+    full_bytes[2] = byteA[offset + 1]
+    full_bytes[3] = byteA[offset + 2]
 
     # unpack the full sized value
     number = unpack_from('>I', full_bytes, 0)
@@ -688,14 +740,18 @@ def uint24FromLeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('<3B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(4)
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[3] = 0
-    full_bytes[2] = n_byte[2]
-    full_bytes[1] = n_byte[1]
-    full_bytes[0] = n_byte[0]
+    full_bytes[2] = byteA[offset + 2]
+    full_bytes[1] = byteA[offset + 1]
+    full_bytes[0] = byteA[offset + 0]
 
     # unpack the full sized value
     number = unpack_from('<I', full_bytes, 0)
@@ -718,19 +774,23 @@ def int24FromBeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('>3B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(4)
 
     # determine byte extesion value
     pad = 0
-    if (n_byte[0] >> 7) == 1:
+    if (byteA[0] >> 7) == 1:
         pad = 255
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[0] = pad
-    full_bytes[1] = n_byte[0]
-    full_bytes[2] = n_byte[1]
-    full_bytes[3] = n_byte[2]
+    full_bytes[1] = byteA[offset + 0]
+    full_bytes[2] = byteA[offset + 1]
+    full_bytes[3] = byteA[offset + 2]
 
     # unpack the full sized value
     number = unpack_from('>i', full_bytes, 0)
@@ -753,19 +813,23 @@ def int24FromLeBytes(byteA: bytearray, index: int) -> int:
     Returns:
         number (int): return the number decoded from the byte stream
     """
-    n_byte     = unpack_from('<3B', byteA, offset=index[0])
+    # index is a list with the offset stored as the first element,
+    # so that it is preserved with out being returned
+    offset = index[0]
+
+    # declare enough bytes for the next largest standard size
     full_bytes = bytearray(4)
 
     # determine byte extesion value
     pad = 0
-    if (n_byte[0] >> 7) == 1:
+    if (byteA[offset + 2] >> 7) == 1:
         pad = 255
 
-    # transfer the unpacked bytes into the fullsized type
+    # transfer the bytes from the bytearray into the fullsized type
     full_bytes[3] = pad
-    full_bytes[2] = n_byte[2]
-    full_bytes[1] = n_byte[1]
-    full_bytes[0] = n_byte[0]
+    full_bytes[2] = byteA[offset + 2]
+    full_bytes[1] = byteA[offset + 1]
+    full_bytes[0] = byteA[offset + 0]
 
     # unpack the full sized value
     number = unpack_from('<i', full_bytes, 0)
